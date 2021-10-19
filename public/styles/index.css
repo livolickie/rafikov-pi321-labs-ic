@@ -1,0 +1,26 @@
+header .container {
+    display: flex;
+    flex-direction: row;
+}
+
+.collapsible-body ul li {
+    margin-bottom: 1rem;
+}
+
+.side-srs {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3rem;
+    margin-top: 3rem;
+    justify-content: center;
+}
+.side-srs h3 {
+    margin: 0;
+}
+.side-srs a {
+    margin-left: 1rem;
+}
+
+.fake-block {
+    padding-bottom: 17rem;
+}

@@ -4,9 +4,9 @@
   "description": "Labs for USATU subject",
   "main": "index.js",
   "dependencies": {
+    "ejs": "^3.1.6",
     "express": "^4.17.1",
-    "nodemon": "^2.0.13",
-    "pug": "^3.0.2"
+    "nodemon": "^2.0.13"
   },
   "devDependencies": {},
   "scripts": {

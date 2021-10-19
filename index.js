@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path')
 
 const app = express()
 
@@ -6,14 +7,25 @@ const app = express()
 const PORT = 3000
 
 //Middlewares
-app.set("view engine", "pug") //We will use Pug as a render engine
+app.set('views', path.join(__dirname, 'views'))
+app.use(express.static(path.join(__dirname, 'public')))
+app.set("view engine", "ejs") //We will use Pug as a render engine
 
-app.use('/', (req, res) => {
+app.route('/').get((req, res) => {
     res.render("index", {
-        appTitle: "Main Page",
-        someVar: true,
-        testList: ["Element One", "Element Two", "Element Three"]
+        appTitle: "Labs Rafikov Danil",
+        helpers: {
+            getRandomInt(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+        }
     })
+})
+
+app.use((req, res) => {
+    res.render("404")
 })
 
 app.listen(PORT, () => {
