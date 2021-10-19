@@ -4,7 +4,7 @@ const path = require('path')
 const app = express()
 
 //User definitions
-const PORT = 3000
+const PORT = 80
 
 //Middlewares
 app.set('views', path.join(__dirname, 'views'))
