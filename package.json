@@ -11,7 +11,8 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "debug": "nodemon index.js"
+    "debug": "nodemon index.js",
+    "start": "node index.js"
   },
   "author": "Livolickie",
   "license": "ISC"
