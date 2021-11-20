@@ -1,0 +1,289 @@
+<main class="container">
+    <h1 data-aos="flip-up" class="center">Начало.</h1>
+    <ul class="collapsible popout" data-aos="fade-right">
+        <li class="active">
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 1-1</div>
+            <div class="collapsible-body">
+                <%let today = new Date()%>
+                <%let date = today.getDate() + '.' + (today.getMonth()+1)+'.'+today.getFullYear()%>
+                <%let time = today.getHours() + ':' + (today.getMinutes())%>
+                <%let dateTime = date + ' ' + time%>
+                <p>Дата и время: <strong><%= dateTime %></strong></p>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 1-2</div>
+            <div class="collapsible-body">
+                <% let var1 = '3' %> 
+                <% let var2 = 5 %>
+                <% let var3 = 'abc' %>  
+                <% let var4 = 123 %>  
+                <p><%= var1 %> - <%= typeof var1 %> </p>
+                <p><%= var2 %> - <%= typeof var2 %> </p>
+                <p><%= typeof var3 %>(<%= var3 %>)</p>
+                <p><%= typeof var4 %>(<%= var4 %>)</p>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 1-3</div>
+            <div class="collapsible-body">
+                <% let x = helpers.getRandomInt(1, 10) %> 
+                <% let y = helpers.getRandomInt(1, 10) %> 
+
+                <p><%= x %> + <%= y %> = <%= x + y %> </p>
+                <p><%= x %> - <%= y %> = <%= x - y %> </p>
+                <p><%= x %> * <%= y %> = <%= x * y %> </p>
+                <p><%= x %> / <%= y %> = <%= x / y %> </p>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 1-4</div>
+            <div class="collapsible-body">
+                <% const NUM_E = 2.71828 %>   
+                <p>Число е равно <strong><%= NUM_E %> </strong></p>
+
+                <% let num_e1 = NUM_E %> 
+                <p>num_e1 = <%= num_e1 %> - <%= typeof num_e1 %> </p>
+
+                <blockquote>В JS тип Number актуален как для дробных, так и для целых чисел.</blockquote>
+
+                <% num_e1 = true %> 
+                <p>num_e1 = <%= num_e1 %> - <%= typeof num_e1 %> </p>
+                <% num_e1 = '2.71828' %> 
+                <p>num_e1 = <%= num_e1 %> - <%= typeof num_e1 %> </p>
+                
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 1-5</div>
+            <div class="collapsible-body">
+                <ul>
+                    <blockquote>Мои скрипты размещены на одной странице. Ссылки на другие источники.</blockquote>
+                    <li><a class="btn waves-effect" href="https://google.com">Google</a></li>
+                    <li><a class="btn waves-effect" href="https://yandex.ru">Yandex</a></li>
+                    <li><a class="btn waves-effect" href="https://yahoo.com">Yahoo</a></li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+    <h1 class="center" data-aos="fade-up">СРС 1 (В-2)</h1>
+    <div class="side-srs" data-aos="fade-left">
+        <h3>Задача 1-1</h3>
+        <a class="waves-effect btn modal-trigger" data-target='modal-srs1'>Посмотреть</a>
+    </div>
+
+    <h1 class="right-align" data-aos="fade-down">Часть 2</h1>
+    <ul class="collapsible popout" data-aos="zoom-in">
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 1-6</div>
+            <div class="collapsible-body">
+                <% let a1 = 1 %> 
+                <% let b1 = false %> 
+                <% let i = 0 %> 
+                
+                <% for(let i = 0; i < 5; i++) {%> 
+                    <% if (i == 1) {a1 = 0; b1 = '0'} %> 
+                    <% if (i == 2) {a1 = 10; b1 = 'true'} %> 
+                    <% if (i == 3) {a1 = false; b1 = 'false'} %> 
+                    <% if (i == 4) {a1 = -1; b1 = ''} %> 
+                    <p><strong>a = <%= a1 %>, b = <%= b1 %></strong></p>
+                    <% if (a1) { %>
+                        <p>a - истина</p>
+                    <%} else {%>
+                        <p>a - ложь</p> <% } %> 
+                    <% if (b1) { %>
+                        <p>b - истина</p>
+                    <%} else {%>
+                        <p>b - ложь</p> <% } %> 
+                <% } %> 
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 1-7</div>
+            <div class="collapsible-body">
+                <% let a = helpers.getRandomInt(1, 10) %> 
+                <% let b = helpers.getRandomInt(1, 10) %>
+                <p>a = <%= a %>, b= <%= b %>  </p>
+                <% if (a > b) {%> 
+                    <p>a > b</p>
+                <%} else if (a < b) {%> 
+                    <p>a < b</p>
+                <% } else { %> 
+                    <p>Наибольшего нет</p>
+                <%}%>
+                
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 1-8</div>
+            <div class="collapsible-body">
+                <blockquote>Работа с конструкцией <strong>switch</strong> в EJS затруднена. Использовал if.</blockquote>
+                <% let A = 'A' %>
+                <% for(let i = 0; i < 4; i++) {%> 
+                    <% if (i == 1) {A = 'B'} %> 
+                    <% if (i == 2) {A = 'C'} %> 
+                    <% if (i == 3) {A = 'A'} %> 
+                    <% if (A == 'A') {%> <p>Переменная имеет значение 'A'</p>
+                    <% } else if (A == 'B') {%> <p>Переменная имеет значение 'B'</p>
+                    <%} else {%> <p>Ответ не найден</p> <% } %> 
+                <% } %> 
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 1-9</div>
+            <div class="collapsible-body">
+                <blockquote>Работа с конструкцией <strong>switch</strong> в EJS затруднена. Использовал if.</blockquote>
+                <% let dt = helpers.getRandomInt(1, 7)%>
+                <p><%= dt%> - номер дня недели</p>   
+                <% if (dt == 1) {%> <p>Это понедельник</p> <% } %>   
+                <% if (dt == 2) {%> <p>Это вторник</p> <% } %>   
+                <% if (dt == 3) {%> <p>Это среда</p> <% } %>   
+                <% if (dt == 4) {%> <p>Это четверг</p> <% } %>   
+                <% if (dt == 5) {%> <p>Это пятница</p> <% } %>   
+                <% if (dt == 6) {%> <p>Это суббота</p> <% } %>   
+                <% if (dt == 7) {%> <p>Это воскресенье</p> <% } %>   
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 1-10</div>
+            <div class="collapsible-body">
+                <% i = 1 %>
+                <% while (i < 6) {%>
+                    <p><%= i %> </p>
+                    <% i++ %> 
+                    <% } %> 
+                <% i-- %> 
+                <h5>В обратном порядке:</h5>
+                <% while (i > 0) {%>
+                    <p><%= i %> </p>
+                    <% i-- %> 
+                    <% } %> 
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 1-11</div>
+            <div class="collapsible-body">
+                <% b = helpers.getRandomInt(10, 20) %>
+                <% a = helpers.getRandomInt(1, 10) %> 
+                <p>[<%= a %> ,<%= b %> ]</p>
+                <% while (a <= b) {%>
+                    <p><%= a %> </p>
+                    <% a++ %> 
+                    <% } %> 
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 1-12</div>
+            <div class="collapsible-body">
+                <% a = helpers.getRandomInt(-5, 0) %> 
+                <% b = helpers.getRandomInt(0, 5) %>
+                <p>[<%= a %> ,<%= b %> ]</p>
+                <% do { %>
+                    <p><%= a %> </p>
+                    <% a++ %> 
+                    <% } while(a <= b) %> 
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 1-13</div>
+            <div class="collapsible-body">
+                <% a = helpers.getRandomInt(1, 10) %> 
+                <% b = helpers.getRandomInt(10, 20) %>
+                <p>[<%= a %> ,<%= b %> ]</p>
+                <% for(let i = a; i <= b; i++) {%>
+                    <p><%= i %> </p>
+                    <% } %> 
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 1-14</div>
+            <div class="collapsible-body">
+                <table class='stripped-table'>
+                    <% for (let i = 1; i < 11; i++) {%>
+                        <tr>
+                            <% for (let j = 1; j < 11; j++) {%>
+                                <td><%= i*j %> </td>  
+                            <% } %> 
+                        </tr>
+                    <% } %> 
+                </table>
+            </div>
+        </li>
+    </ul>
+    <h1 class="center" data-aos="zoom-out">СРС 2 (В-2)</h1>
+    <div class="side-srs left" data-aos="fade-left">
+        <h3>Задача 1-2</h3> 
+        <a class="waves-effect btn modal-trigger" data-target='modal-srs2-1'>Посмотреть</a>
+    </div>
+    <div class="side-srs right" data-aos="fade-right">
+        <h3>Задача 1-3</h3>
+        <a class="waves-effect btn modal-trigger" data-target='modal-srs2-2'>Посмотреть</a>
+    </div>
+
+    <div id="modal-srs1" class="modal">
+        <div class="modal-content">
+            <h4>СРС-1</h4>
+            <h5>Исходная функция: <strong><i>f(c,d,a) = (2*c-(d/23))/(1-(a/3))</i></strong></h5>
+            <% let c = helpers.getRandomInt(-20, 20) %> 
+            <% let d = helpers.getRandomInt(-20, 20) %> 
+            <% a = helpers.getRandomInt(-20, 20) %> 
+            <h5>c = <%= c %></h5>
+            <h5>d = <%= d %></h5>
+            <h5>a = <%= a %></h5>
+            <h5>f(<%= c %> ,<%= d %> ,<%= a%> ) = (2*<%= c %>-(<%= d %>/23)/(1-(<%= a %>/3)) = <strong><%= (2*c-(d/23))/(1-(a/3)) %> </strong></h5>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Закрыть</a>
+        </div>
+    </div>
+    
+    <div id="modal-srs2-1" class="modal">
+        <div class="modal-content">
+            <h4>СРС-2 | 1</h4>
+            <table class='stripped-table'>
+                <% for (let i = 0; i < 10; i++) {%>
+                    <tr>
+                        <% for (let j = 0; j < 10; j++) {%>
+                            <% if ((i*10+j+1) % 2 != 0) {%> 
+                                <td><%= i*10+j+1 %> </td>  
+                            <%} else {%>
+                                <td class="red"><%= i*10+j+1 %> </td> <%}%> 
+                        <% } %> 
+                    </tr>
+                <% } %> 
+            </table>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Закрыть</a>
+        </div>
+    </div>
+    
+    <div id="modal-srs2-2" class="modal">
+        <div class="modal-content">
+            <h4>СРС-2 | 2</h4>
+            <% let N = helpers.getRandomInt(10, 1000) %> 
+            <% let M = helpers.getRandomInt(10, 1000) %>
+            <% let ND = [1, N]; NDS = 0%>
+            <% let MD = [1, M]; MDS = 0%>
+            <% let isFriendly = true %> 
+            <% for(let i = 2; i < N/2 + 1; i++) {%>
+                <% if (N % i == 0) {ND.push(i)} %>     
+            <% } %> 
+            <% for(let i = 2; i < M/2 + 1; i++) {%>
+                <% if (M % i == 0) {MD.push(i)} %>     
+            <% } %> 
+            <% ND.forEach(el => NDS += el) %> 
+            <% MD.forEach(el => MDS += el) %> 
+            <h5>N = <strong><%= N %></strong></h5> 
+            <h5>M = <strong><%= M %></strong></h5> 
+            <h5>Делители N = [<%= ND %>] </h5>
+            <h5>Делители M = [<%= MD %>] </h5>
+            <h5>N и M дружественны? - <strong><%= NDS == MDS ? 'Да' : 'Нет' %></strong></h5>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Закрыть</a>
+        </div>
+    </div>
+
+    <div class="fake-block"></div>
+</main>

@@ -1,0 +1,245 @@
+<main class="container">
+    <h1 data-aos="flip-up" class="center">Этап 2</h1>
+    <ul class="collapsible popout" data-aos="fade-right">
+        <li class="active">
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 2-1</div>
+            <div class="collapsible-body">
+                <%  
+                    let treug = []
+                    let kvd = []
+                    let rez = []
+                    let rez1 = []
+
+                    for(let i = 0; i < 10; i++) { 
+                        treug[i] = i * (i + 1) / 2 
+                        kvd[i] = (i+1)*(i+1)
+                    }
+
+                    rez = treug.concat(kvd)
+                %>
+                <strong>1) Треугольные числа:</strong>
+                <%= treug.join(', ').toString() %> 
+                <p></p>
+
+                <strong>2) Квадраты натуральных:</strong>
+                <%= kvd.join(', ').toString() %> 
+                <p></p>
+
+                <strong>3) Объедененный массив:</strong>
+                <%= rez.join(', ').toString() %> 
+                <p></p>
+
+                <strong>4) Отсортированный массив:</strong>
+                <%= rez.sort((a,b) => a - b).join(', ').toString() %>
+                <p></p>
+
+                <strong>5) Отсортированный массив*:</strong>
+                <%= rez.slice(1).join(', ').toString() %>  
+                <p></p>
+
+                <% 
+                    rez1 = [...new Set(rez.slice(1))]
+                %> 
+                <strong>6) Уникальный массив:</strong>
+                <%= rez1.join(', ').toString() %>  
+            </div>
+        </li>
+
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 2-2</div>
+            <div class="collapsible-body">
+                <% 
+                    let len = helpers.getRandomInt(3, 21)
+                    let arr = []
+
+                    for(let i = 0; i < len; i++) arr[i] = helpers.getRandomInt(10, 100)  
+                    arr.sort((a, b) => a - b)
+                %> 
+                <h5><strong>Массив из <%= len %> элементов, заполенных случайных числами: </strong></h5>
+                <%= arr.join(', ').toString() %> 
+                <p></p>                
+                
+                <h5><strong>Обратный порядок: </strong></h5>
+                <%= arr.reverse().join(', ').toString() %> 
+                <p></p>
+                
+                
+                <% 
+                    arr.splice(-1)
+
+                    let sum = 0
+                    let average = 0
+
+                    arr.forEach(el => sum += el)
+
+                    average = sum / arr.length
+                %> 
+                <h5><strong>После удаления: </strong></h5>
+                <%= arr.join(', ').toString() %> 
+                <p></p>
+
+                <h5><strong>Cумма элементов: </strong></h5>
+                <%= sum %> 
+                <p></p>
+
+                <h5><strong>Среднее арифметическое: </strong></h5>
+                <%= average.toFixed(3) %> 
+                <p></p>
+
+                <h5><strong>Есть 50?</strong></h5>
+                <%= arr.includes(50) ? 'Да' : 'Нет' %> 
+                <p></p>
+
+                <% 
+                    arr = [...new Set(arr)]
+                %> 
+                <h5><strong>Уникальный массив:</strong></h5>
+                <%= arr.join(', ').toString() %> 
+                <p></p>
+            </div>
+        </li>
+
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 2-3</div>
+            <div class="collapsible-body">
+                <blockquote>
+                    Использовал стандартные объекты JavaScript для данной задачи.
+                </blockquote>
+                <%
+                    let obj = {
+                        cnum: 2001,
+                        cname: 'Hoffman',
+                        city: 'London',
+                        snum: 1001
+                    }  
+                %> 
+                <p><strong>Объект:</strong>  <%= JSON.stringify(obj, null, ' ') %></p>
+
+                <% obj.rating = 100 %> 
+                <p><strong>Объект:</strong>  <%= JSON.stringify(obj, null, ' ') %></p>  
+
+                <blockquote>
+                    Выполнение 3-5 пункта затруднено
+                </blockquote>
+            </div>  
+        </li>
+    </ul>
+
+    <h1 class="center" data-aos="fade-up">СРС 1 (В-1)</h1>
+    <div class="side-srs" data-aos="fade-left">
+        <h3>Упражнение 2-4</h3>
+        <a class="waves-effect btn modal-trigger" data-target='modal-srs1'>Посмотреть</a>
+    </div>
+
+    <h1 class="right-align" data-aos="fade-down">Часть 2</h1>
+    <ul class="collapsible popout" data-aos="zoom-in">
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 2-5 / В-1</div>
+            <div class="collapsible-body">
+                <% 
+                     let f = function(u, t) {
+                        if (u > 0 && t > 0) return u*u + t
+                        else if (u <= 0 && t <= 0) return u + t*t
+
+                        return u + t 
+                     }
+                     let a = helpers.getRandomInt(-100, 100)
+                     let b = helpers.getRandomInt(-100, 100)
+                %> 
+                <h5>A = <%= a %> </h5>
+                <h5>B = <%= b %> </h5>
+                <h5>Z = <%= f(a - b, b*b - a) + f(a*a*b, b*b) %> </h5>
+            </div>
+        </li>
+
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 2-6 / В-1</div>
+            <div class="collapsible-body">
+                <% 
+                    const lib = {
+                        arr: [],
+                        n: helpers.getRandomInt(5, 10),
+                        definition() {
+                            return "В матрице Z(n,n) каждый элемент столбца разделить на диагональный, стоящий в том же столбце. Исходный и скорректированный массивы вывести на экран."
+                        },
+                        addValues() {
+                            for(let i = 0; i < this.n; i++) {
+                                this.arr.push([])
+                                for(let j = 0; j < this.n; j++) this.arr[i].push(helpers.getRandomInt(1, 100))
+                            }
+                        },
+                        print() {
+                            //Not implemented
+                        },
+                        process() {
+                            let diag = -1
+                            for(let i = 0; i < this.n; i++) {
+                                diag = this.arr[i][i]
+                                for(let j = 0; j < this.n; j++) {
+                                    this.arr[i][j] /= diag
+                                }
+                            }
+                        }
+                    }
+                %> 
+                <p><strong>Определение:</strong> <%= lib.definition() %> </p>
+                
+                <blockquote>Функцию вывода заменил получением свойства объекта.</blockquote>
+
+                <% lib.addValues() %> 
+                <p><strong>Исходный массив:</strong></p>
+                <table class="stripped responsive-table">
+                    <% for(let i = 0; i < lib.n; i++) {%>
+                        <tr>
+                            <% for(let j = 0; j < lib.n; j++) {%>
+                                <td><%= lib.arr[i][j] %> </td>
+                            <% } %> 
+                        </tr>    
+                    <% } %> 
+                </table>
+
+                <% lib.process() %> 
+                <p><strong>Обработанный массив:</strong></p>
+                <table class="stripped responsive-table">
+                    <% for(let i = 0; i < lib.n; i++) {%>
+                        <tr>
+                            <% for(let j = 0; j < lib.n; j++) {%>
+                                <td><%= lib.arr[i][j].toFixed(2) %> </td>
+                            <% } %> 
+                        </tr>    
+                    <% } %> 
+                </table>
+            </div>
+        </li>
+    </ul>
+    
+    <div id="modal-srs1" class="modal">
+        <div class="modal-content">
+            <h4>Задача 2-4</h4>
+            <% 
+                let srs_arr = []
+                let n = helpers.getRandomInt(5, 20)
+                for(let i = 0; i < n; i++) {
+                    srs_arr[i] = helpers.getRandomInt(1, 100)
+                }
+            %>
+            <h5>Элементов всего: <strong><%= n %> </strong></h5>
+            <h5>Исходный массив: <strong><%= srs_arr.join(' ,').toString()%> </strong></h5>
+            <%
+                for(let i = 1; i < n; i++) {
+                    for(let j = 0; j < i; j++) {
+                        if (i == j) continue
+                        srs_arr[i] += srs_arr[j]
+                    }
+                }
+            %> 
+        
+        <h5>Готовый массив: <strong><%= srs_arr.join(' ,').toString()%> </strong></h5>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Закрыть</a>
+        </div>
+    </div>
+
+    <div class="fake-block"></div>
+</main>
