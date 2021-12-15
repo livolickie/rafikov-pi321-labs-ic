@@ -1,0 +1,221 @@
+<main class="container">
+    <h1 data-aos="flip-up" class="center">Этап 3</h1>
+    <ul class="collapsible popout" data-aos="fade-right">
+        
+        <li class="active">
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 3-1</div>
+            <div class="collapsible-body">
+                <h4 class="center-align">Проверяем метод GET:</h4>
+                <input type="text" maxlength="40" placeholder="Введите имя" id='get_username'>
+                <div class="to-right">
+                    <a class="btn blue darken-1 hoverable" onclick="getQuery()">Проверить</a>
+                </div>
+            </div>
+        </li>
+
+
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 3-2</div>
+            <div class="collapsible-body">  
+                <h4 class="center-align">Проверяем метод POST:</h4>
+                <input type="text" maxlength="40" placeholder="Введите имя" id='post_username'>
+                <div class="to-right">
+                    <a class="btn blue darken-1 hoverable" onclick="postQuery()">Проверить</a>
+                </div> 
+            </div>
+        </li>
+
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 3-3</div>
+            <div class="collapsible-body">
+                <h4 class="center-align">Работа с переключателями </h4>
+                <input type="number" id="a" value="0">
+                <div class="side">
+                    <label class="col s6">
+                        <input name="group1" type="radio" id="op" checked/>
+                        <span>Сложение</span>
+                    </label>
+                    <label class="col s6">
+                        <input name="group1" type="radio"/>
+                        <span>Умножение</span>
+                    </label>
+                </div>
+                
+                <input type="number" id="b" value="0">
+                <div class="to-right">
+                    <a class="btn blue darken-1 hoverable" onclick="postQuery('f3')">Вычислить</a>
+                </div>  
+            </div>
+        </li>
+
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 3-4</div>
+            <div class="collapsible-body">
+                <h4 class="center-align">Работа с флажком. </h4>
+                <input type="number" id="a1" value="0">
+                    <div class="side">
+                    <label class="col s4">
+                        <input name="group1" type="radio" id="op1" checked/>
+                        <span>Сложение</span>
+                    </label>
+                    <label class="col s4">
+                        <input name="group1" type="radio"/>
+                        <span>Умножение</span>
+                    </label>
+                    <label class="col s4">
+                        <input type="checkbox" id="full"/>
+                        <span>Полный вывод</span>
+                    </label>
+                </div>
+                
+                <input type="number" id="b1" value="0">
+                <div class="to-right">
+                    <a class="btn blue darken-1 hoverable" onclick="postQuery('f4')">Вычислить</a>
+                </div> 
+            </div>
+        </li>
+
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 3-5</div>
+            <div class="collapsible-body">
+                <input type="text" placeholder="Фамилия" id='surname5'>
+                <input type="text" placeholder="Имя" id="name5">
+                <select id="gender5">
+                    <option value="1">Господин</option>
+                    <option value="2">Госпожа</option>
+                    <option value="3">Товарищ</option>
+                </select>
+                <textarea id="info" cols="30" rows="3" placeholder="Дополнительная информация"></textarea>
+                <div class="to-right">
+                    <a class="btn blue darken-1 hoverable" onclick="postQuery('f5')">Отправить</a>
+                </div>
+            </div>
+        </li>
+
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Упражнение 3-6(7)</div>
+            <div class="collapsible-body">
+                <h4 class="center-align">Угадай число</h4>
+                <input type="number" placeholder="0" id='magic_number'>
+                <div class="to-right">
+                    <a class="btn blue darken-1 hoverable" onclick="postQuery('f6')">Проверить</a>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <h2 data-aos="flip-right" class="cener">СРС</h2>
+
+    <ul class="collapsible popout" data-aos="fade-right">
+        
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Задача 3-1</div>
+            <div class="collapsible-body">
+                <h4 class="center-align">Больше или меньше</h4>
+                <input type="number" id="t31_a" value="0">
+                <input type="number" id="t31_b" value="0">
+                <div class="to-right">
+                    <a class="btn blue darken-1 hoverable" onclick="postQuery('t1')">Проверить</a>
+                </div>
+            </div>
+        </li>
+
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Задача 3-2</div>
+            <div class="collapsible-body">
+                <h4 class="center-align">Калькулятор</h4>
+                <input type="number" id="t32_a" value="0">
+                <input type="number" id="t32_b" value="0">
+                <select id="t32_op">
+                    <option value="+" selected>сложить</option>
+                    <option value="-">вычесть</option>
+                    <option value="*">умножить</option>
+                    <option value="/">разделить</option>
+                </select>
+                <div class="to-right">
+                    <a class="btn blue darken-1 hoverable" onclick="postQuery('t2')">Вычислить</a>
+                </div>
+            </div>
+        </li>
+
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Задача 3-3</div>
+            <div class="collapsible-body">
+                <h4 class="center-align">Вариант 17, нечетный</h4>
+                <input type="number" id="t33_n" min="1" value="10">
+                <select id="t33_op">
+                    <option value="1" selected>четные</option>
+                    <option value="2">нечетные</option>
+                    <option value="3">простые</option>
+                    <option value="4">составные</option>
+                </select>
+                <div class="to-right">
+                    <a class="btn blue darken-1 hoverable" onclick="postQuery('t3')">Получить</a>
+                </div>
+            </div>
+        </li>
+        
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Задача 3-4</div>
+            <div class="collapsible-body">
+                <h4 class="center-align">Авторизация</h4>
+                <input type="text" id="t34_login" placeholder="Ваш логин">
+                <div class="to-right">
+                    <a class="btn blue darken-1 hoverable" onclick="postQuery('t4')">Вычислить</a>
+                </div>
+            </div>
+        </li>
+
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Задача 3-5</div>
+            <div class="collapsible-body">
+                <h4 class="center-align">Анкета "Ваш характер"</h4>
+                <input type="text" id="t35_name" placeholder="Ваше имя">
+                <p><strong>Ответье да или нет на следующие вопросы:</strong></p>
+                <% for(let i = 0; i < questions.length; i++) {%> 
+                    <div class="row">
+                        <div class="col s12"><%= questions[i] %> </div>
+                        <label class="col s1"><input type="radio" id=<%= 't35_q'+(i+1)%> name=<%= 'g'+(i+1)%>><span>Да</span></label>
+                        <label class="col s1"><input type="radio" name=<%= 'g'+(i+1)%>><span>Нет</span></label>
+                    </div>
+                <% } %> 
+                <div class="to-right">
+                    <a class="btn blue darken-1 hoverable" onclick="postQuery('t5')">Отправить</a>
+                </div>
+            </div>
+        </li>
+
+        <li>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>Задача 3-6</div>
+            <div class="collapsible-body">
+                <h4 class="center-align">Вариант 17</h4>
+                <div class="task">
+                    <h5>#17: </h5>
+                    <input type="text" id="t36_number" placeholder="Введите число">
+                    <div class="to-right ">
+                        <a class="btn blue darken-1 hoverable" onclick="postQuery('t6_1')">Отправить</a>
+                    </div>
+                </div>
+
+                <div class="task">
+                    <h5>#20: </h5>
+                    <input type="text" id="t36_message" placeholder="Введите сообщение для шифрования">
+                    <div class="to-right">
+                        <a class="btn blue darken-1 hoverable" onclick="postQuery('t6_2')">Отправить</a>
+                    </div>
+                </div>
+
+                <div class="task">
+                    <h5>#23: </h5>
+                    <input type="text" id="t36_text" placeholder="Введите текст">
+                    <div class="to-right ">
+                        <a class="btn blue darken-1 hoverable" onclick="postQuery('t6_3')">Отправить</a>
+                    </div>
+                </div>
+                
+            </div>
+        </li>
+    </ul>
+
+    <div class="fake-block"></div>
+</main>

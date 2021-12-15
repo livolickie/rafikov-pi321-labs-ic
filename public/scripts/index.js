@@ -1,7 +1,7 @@
 M.AutoInit() //Initialize Materialize
 AOS.init() //Initialize AOS Library for scroll animations
 
-const PAGE_COUNT = 2
+const PAGE_COUNT = 3
 
 let page_num = -1
 
@@ -28,5 +28,35 @@ function navUpdate() {
         console.log(err)
     }
 }
+
+let letters = document.querySelectorAll('.letter')
+    for(let i = 0; i < letters.length; i++) {
+        letters[i].style.animationDuration = getRndRange(1, 1.8) + 's';
+        letters[i].style.backgroundColor = `rgb(${getRndRangeInt(0,255)},${getRndRangeInt(0,255)},${getRndRangeInt(0, 255)})`;  
+
+        let rnd = getRndRangeInt(1, 4)
+        if (rnd >= 1 && rnd < 3) {
+            letters[i].style.borderRadius = '100%'; 
+        } else if (rnd < 4) {
+            letters[i].style.borderRadius = '10%'; 
+        } else if (rnd >= 4) {
+            letters[i].style.width = 0;
+            letters[i].style.height = 0;
+            letters[i].style.borderLeft = '2.5rem solid transparent';
+            letters[i].style.borderRight = '2.5rem solid transparent';
+            letters[i].style.backgroundColor = 'rgba(0,0,0,0)'
+            letters[i].style.height = 0;
+            letters[i].style.borderBottom = '4rem solid '+`rgb(${getRndRangeInt(0,255)},${getRndRangeInt(0,255)},${getRndRangeInt(0,255)})`;;
+        }
+        letters[i].style.marginLeft = getRndRange(0, 7)+'rem';
+    }
+
+    function getRndRangeInt(from, to) {
+        return Math.floor(Math.random() * to + from);
+    }
+
+    function getRndRange(from, to) {
+        return Math.random() * to + from;
+    }
 
 navUpdate()

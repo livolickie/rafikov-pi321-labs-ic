@@ -24,3 +24,44 @@ header .container {
 .fake-block {
     padding-bottom: 17rem;
 }
+
+@keyframes letters {
+    0% {
+        opacity: .6;
+        transform: scale(1)  rotateZ(0deg);
+    }
+    100% {
+        opacity: .4;
+        transform: scale(.65) rotateZ(25deg);
+    }
+}
+
+.side1 {
+    float: left;
+}
+.side2 {
+    float: right;
+}
+
+.letter {
+    display: absolute;
+    width: 5rem;
+    height: 5rem;
+    background-color: grey;
+    margin: 1rem;
+    opacity: .6;
+    animation: letters 1s ease-in-out alternate infinite;
+}
+
+.to-right {
+    display: flex;
+    justify-content: right;
+    margin-top: 1.5rem;
+
+}
+
+.task {
+    display: grid;
+    grid-template-columns: 0.25fr 10fr 1fr;
+    grid-gap: 1rem;
+}

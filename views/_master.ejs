@@ -18,14 +18,57 @@
             <li class="waves-effect arrow"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
             <li class="waves-effect li_link"><a href="/1">1</a></li>
             <li class="waves-effect li_link"><a href="/2">2</a></li>
+            <li class="waves-effect li_link"><a href="/3">3</a></li>
             <li class="waves-effect arrow"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
           </ul>
     </header>
+
+    <div class="side1" data-aos="flip-left">
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+    </div>
+    <div class="side2" data-aos="flip-right">
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+        <div class="letter"></div>
+    </div>
 
     <%- include(renderPage) %> 
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="libs/materialize/materialize.min.js"></script>
     <script src="scripts/index.js"></script>
+    <% if (renderPage === 'partial/part3.ejs') {%> <script src="scripts/part3.js"></script><% } %> 
 </body>
 </html>
