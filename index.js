@@ -82,15 +82,15 @@ app.route('/:part/api').get((req, res) => {
     var a, b, result
     switch(type) {
         case 'post':
-            msg = `Здравствуйте, ${req.query.username}.`
+            msg = `Здравствуйте, ${req.body.username}.`
             break;
 
         case 'calc':
-            a = Number.parseFloat(req.query.a)
-            b = Number.parseFloat(req.query.b)
-            let op = req.query.op
-            let full = req.query.full
-            if (full == 'false')
+            a = Number.parseFloat(req.body.a)
+            b = Number.parseFloat(req.body.b)
+            let op = req.body.op
+            let full = req.body.full
+            if (!full || full == 'False')
                 msg = `Результат: ${op == 'add' ? a + b : a * b}`
             else
                 msg = `${a} ${op == 'add' ? '+' : '*'} ${b} = ${op == 'add' ? a + b : a * b}`

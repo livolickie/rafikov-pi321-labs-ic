@@ -65,3 +65,22 @@ header .container {
     grid-template-columns: 0.25fr 10fr 1fr;
     grid-gap: 1rem;
 }
+
+label.col {
+    margin-right: 1rem;
+}
+
+textarea {
+    border-radius: 5px;
+    border: none;
+    box-shadow: 1px 1px 10px gainsboro;
+    margin-top: 1rem;
+}
+
+.question {
+    margin-bottom: .1rem;
+}
+.question label {
+    margin-right: .5rem;
+    margin-top: 1rem;
+}

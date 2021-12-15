@@ -1,40 +1,47 @@
 async function getQuery() {
-    // M.toast({html: 'Отправка GET запроса...', displayLength: 1000})
     let username = document.querySelector("#get_username").value
     let data = await fetch(`/3/api?type=get&username=${username}`)
     M.toast({html: await data.text()})
 }
 
 async function postQuery(func = 'f2') {
-    // M.toast({html: 'Отправка POST запроса...', displayLength: 1000})
-    let data = null
+    var data
     let a = 0 
     let b = 0
     let op = ''
     switch(func) {
         case 'f2':
-            let username = document.querySelector("#post_username").value
-            data = await fetch(`/3/api?type=post&username=${username}`, {
-                method: 'POST'
+            data = await fetch(`/3/api?type=post`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    username: document.querySelector("#post_username").value,
+                })
             })
         break;
 
         case 'f3':
-            a = document.querySelector("#a").value
-            b = document.querySelector("#b").value
-            op = document.querySelector("#op").checked
-            data = await fetch(`/3/api?type=calc&full=false&a=${a}&b=${b}&op=${op ? 'add' : 'mult'}`, {
-                method: 'POST'
+            data = await fetch(`/3/api?type=calc`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    a: document.querySelector("#a").value,
+                    b: document.querySelector("#b").value,
+                    op: document.querySelector("#op").checked ? 'add' : 'multi'
+                })
             })
         break;
         
         case 'f4':
-            a = document.querySelector("#a1").value
-            b = document.querySelector("#b1").value
-            op = document.querySelector("#op1").checked
-            let full = document.querySelector("#full").checked
-            data = await fetch(`/3/api?type=calc&full=${full}&a=${a}&b=${b}&op=${op ? 'add' : 'mult'}`, {
-                method: 'POST'
+            data = await fetch(`/3/api?type=calc`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    a: document.querySelector("#a1").value,
+                    b: document.querySelector("#b1").value,
+                    op: document.querySelector("#op1").checked ? 'add' : 'multi',
+                    full: document.querySelector("#full").checked
+                })
             })
             break;
 
