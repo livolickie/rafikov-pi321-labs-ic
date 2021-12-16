@@ -1,8 +1,12 @@
 const express = require('express')
 const path = require('path')
 const fs = require('fs')
+const mongo = require('mongodb')
+const { response } = require('express')
+
 
 const app = express()
+const db_client = new mongo.MongoClient("mongodb://localhost:27017/")
 
 //User definitions
 const PORT = process.env.PORT || 8000;
@@ -60,7 +64,58 @@ app.route('/:part').get((req, res, next) => {
     res.render("_master.ejs", data)
 })
 
-app.route('/:part/api').get((req, res) => {
+app.route('/4/api').get((req, res) => {
+    let os = req.app.locals.db.collection('os')
+    os.find({}).toArray((err, docs) => {
+        if (err) {
+            console.log(err)
+            return res.sendStatus(500)
+        }
+        res.send(docs)
+    })
+}).post((req, res) => {
+    let os = req.app.locals.db.collection('os')
+    os.insertOne({
+        name: req.body.name,
+        platform: req.body.platform,
+        bitness: req.body.bitness,
+        developer: req.body.developer,
+        users_count: Number.parseInt(req.body.users),
+    }, (err) => {
+        if (err) {
+            res.sendStatus(500)
+        }
+        else res.sendStatus(200)
+    }) 
+})
+.put((req, res) => {
+    let os = req.app.locals.db.collection('os')
+    os.findOneAndUpdate({_id: new mongo.ObjectId(req.body._id)}, {$set: {
+        name: req.body.name,
+        platform: req.body.platform,
+        bitness: req.body.bitness,
+        developer: req.body.developer,
+        users_count: Number.parseInt(req.body.users)}
+    }, (err) => {
+        if (err) {
+            res.sendStatus(500)
+        }
+        else res.sendStatus(200)
+    }) 
+})
+.delete((req, res) => {
+    let os = req.app.locals.db.collection('os')
+    os.findOneAndDelete({
+        _id: new mongo.ObjectId(req.body._id)
+    }, (err) => {
+        if (err) {
+            res.sendStatus(500)
+        }
+        else res.sendStatus(200)
+    }) 
+})
+
+app.route('/3/api').get((req, res) => {
     //API for GET method
     let type = req.query.type
     res.set({'content-type': 'text/html; charset=utf-8'})
@@ -227,4 +282,9 @@ app.use((req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server successfully started on ${PORT}`)
+    db_client.connect((err, client) => {
+        if (err) return console.log('Failed to connect MongoDB')
+        app.locals.db = client.db('lab4')
+        console.log('Connected to MongoDB')
+    })
 })

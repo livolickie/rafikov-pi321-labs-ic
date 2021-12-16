@@ -84,3 +84,31 @@ textarea {
     margin-right: .5rem;
     margin-top: 1rem;
 }
+
+.os-edit-side {
+    display: grid;
+    grid-gap: .5rem;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    align-items: center;
+}
+
+#os_side {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 1rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    box-shadow: 1px 1px 5px gainsboro;
+    border-radius: 8px;
+    font-size: 1.2rem;
+}
+
+#os_side .btn-floating {
+    margin: .25rem .5rem 0 0;
+}
+
+@media screen and (max-width: 900px) {
+    .os-edit-side, #os_side {
+        grid-template-columns: 1fr;
+    }
+}
