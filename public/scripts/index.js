@@ -1,7 +1,9 @@
+// eslint-disable-next-line no-undef
 M.AutoInit() //Initialize Materialize
+// eslint-disable-next-line no-undef
 AOS.init() //Initialize AOS Library for scroll animations
 
-const PAGE_COUNT = 3
+const PAGE_COUNT = 4
 
 let page_num = -1
 
@@ -16,7 +18,7 @@ function navUpdate() {
         if (page_num == 0) li_arrows[0].classList.add('disabled')
         if (page_num+1 >= PAGE_COUNT) li_arrows[1].classList.add('disabled')
 
-        li_arrows[0].addEventListener('click', (eent) => {
+        li_arrows[0].addEventListener('click', () => {
             if (page_num - 1 > -1) window.location.replace(`/${page_num}`)
   
         })
@@ -46,7 +48,7 @@ let letters = document.querySelectorAll('.letter')
             letters[i].style.borderRight = '2.5rem solid transparent';
             letters[i].style.backgroundColor = 'rgba(0,0,0,0)'
             letters[i].style.height = 0;
-            letters[i].style.borderBottom = '4rem solid '+`rgb(${getRndRangeInt(0,255)},${getRndRangeInt(0,255)},${getRndRangeInt(0,255)})`;;
+            letters[i].style.borderBottom = '4rem solid '+`rgb(${getRndRangeInt(0,255)},${getRndRangeInt(0,255)},${getRndRangeInt(0,255)})`
         }
         letters[i].style.marginLeft = getRndRange(0, 7)+'rem';
     }

@@ -20,7 +20,7 @@ app.route('/:part').get((req, res, next) => {
     if (part == 'favicon.ico') return next()
     if (!fs.existsSync(`views/partial/part${part}.ejs`)) return res.render('404', {message: 'Work in progres...'})
 
-    data = {
+    let data = {
         title: `Part ${req.params.part}`,
         helpers: {
             getRandomInt(min, max) {
@@ -66,7 +66,7 @@ app.route('/:part/api').get((req, res) => {
     res.set({'content-type': 'text/html; charset=utf-8'})
     let msg = ''
     switch(type) {
-        case "get":
+        case "f1":
             msg = `Здравствуйте, ${req.query.username}.`
         break;
 
@@ -81,19 +81,18 @@ app.route('/:part/api').get((req, res) => {
     let msg = ''
     var a, b, result
     switch(type) {
-        case 'post':
+        case 'f2':
             msg = `Здравствуйте, ${req.body.username}.`
             break;
 
-        case 'calc':
+        case 'f3':
+        case 'f4':
             a = Number.parseFloat(req.body.a)
             b = Number.parseFloat(req.body.b)
-            let op = req.body.op
-            let full = req.body.full
-            if (!full || full == 'False')
-                msg = `Результат: ${op == 'add' ? a + b : a * b}`
+            if (!req.body.full || req.body.full == 'False')
+                msg = `Результат: ${req.body.op == 'add' ? a + b : a * b}`
             else
-                msg = `${a} ${op == 'add' ? '+' : '*'} ${b} = ${op == 'add' ? a + b : a * b}`
+                msg = `${a} ${req.body.op == 'add' ? '+' : '*'} ${b} = ${req.body.op == 'add' ? a + b : a * b}`
             break;
 
         case 'f5':
@@ -106,8 +105,7 @@ app.route('/:part/api').get((req, res) => {
         break;
 
         case 'f6':
-            const MAGIC_NUMBER = 5
-            if (req.body.magic_number == MAGIC_NUMBER) msg = 'Угадали! Число '+MAGIC_NUMBER
+            if (req.body.magic_number == 5) msg = 'Угадали! Число '+ 5
             else msg = 'Не угадали!'
             break;
 
@@ -133,7 +131,7 @@ app.route('/:part/api').get((req, res) => {
             break;
 
         case 't3':
-            let n = Number.parseInt(req.body.n)
+            var n = Number.parseInt(req.body.n)
             if (req.body.op == '1') msg = `Четные числа от 1 до ${n}: [`
             else if (req.body.op == '2') msg = `Нечетные числа от 1 до ${n}: [`
             else if (req.body.op == '3') msg = `Простые числа от 1 до ${n}: [`
@@ -157,7 +155,7 @@ app.route('/:part/api').get((req, res) => {
             break;
 
         case 't4':
-            let users = [{login: 'user1', name: "Иванов Иван Иванович"},{login: 'user2', name: "Петров Петр Петрович"},
+            var users = [{login: 'user1', name: "Иванов Иван Иванович"},{login: 'user2', name: "Петров Петр Петрович"},
                         {login: 'user3', name: "Алексеев Алексей Алексеевич"},{login: 'user4', name: "Морсов Морс Морсович"},]
             users.forEach(u => {
                 if (u.login == req.body.login) {
@@ -171,7 +169,7 @@ app.route('/:part/api').get((req, res) => {
         case 't5':
             result = 0
             msg = `${req.body.name}, `
-            let answers = req.body.answers
+            var answers = req.body.answers
             for(let i = 0; i < answers.length; i++) {
                 if ((answers[i] && (i == 2 || i== 8 || i == 9 || i == 12 || i == 13 || i == 18)) ||
                     (!answers[i] && !(i == 2 || i== 8 || i == 9 || i == 12 || i == 13 || i == 18)))
@@ -189,8 +187,8 @@ app.route('/:part/api').get((req, res) => {
             break;
 
         case 't6_2':
-            let m1 = req.body.message.split('')
-            let m2 = req.body.message.split('')
+            var m1 = req.body.message.split('')
+            var m2 = req.body.message.split('')
 
             for(let k = 0; k < 3; k++ ){
                 for(let i = 0; i < m1.length; i++) {
@@ -203,14 +201,14 @@ app.route('/:part/api').get((req, res) => {
                     }
                 }
             }
-            let re = new RegExp(',', 'g');
+            var re = new RegExp(',', 'g');
             msg = m2.toString().replace(re,'')
             break;
 
         case 't6_3':
-            let text = req.body.text
-            let re1 = new RegExp('<i>', 'g');
-            let re2 = new RegExp('</i>', 'g');
+            var text = req.body.text
+            var re1 = new RegExp('<i>', 'g');
+            var re2 = new RegExp('</i>', 'g');
             text = text.replace(re1,'<курсив>')
             text = text.replace(re2,'<конец курсива>')
             msg = text

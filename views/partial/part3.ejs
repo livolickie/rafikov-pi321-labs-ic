@@ -8,7 +8,7 @@
                 <h4 class="center-align">Проверяем метод GET:</h4>
                 <input type="text" maxlength="40" placeholder="Введите имя" id='get_username'>
                 <div class="to-right">
-                    <a class="btn blue darken-1 hoverable" onclick="getQuery()">Проверить</a>
+                    <a class="btn blue darken-1 hoverable" onclick="queryToServer('f1')">Проверить</a>
                 </div>
             </div>
         </li>
@@ -20,7 +20,7 @@
                 <h4 class="center-align">Проверяем метод POST:</h4>
                 <input type="text" maxlength="40" placeholder="Введите имя" id='post_username'>
                 <div class="to-right">
-                    <a class="btn blue darken-1 hoverable" onclick="postQuery()">Проверить</a>
+                    <a class="btn blue darken-1 hoverable" onclick="queryToServer('f2')">Проверить</a>
                 </div> 
             </div>
         </li>
@@ -43,7 +43,7 @@
                 
                 <input type="number" id="b" value="0">
                 <div class="to-right">
-                    <a class="btn blue darken-1 hoverable" onclick="postQuery('f3')">Вычислить</a>
+                    <a class="btn blue darken-1 hoverable" onclick="queryToServer('f3')">Вычислить</a>
                 </div>  
             </div>
         </li>
@@ -70,7 +70,7 @@
                 
                 <input type="number" id="b1" value="0">
                 <div class="to-right">
-                    <a class="btn blue darken-1 hoverable" onclick="postQuery('f4')">Вычислить</a>
+                    <a class="btn blue darken-1 hoverable" onclick="queryToServer('f4')">Вычислить</a>
                 </div> 
             </div>
         </li>
@@ -87,7 +87,7 @@
                 </select>
                 <textarea id="info" cols="30" rows="3" placeholder="Дополнительная информация"></textarea>
                 <div class="to-right">
-                    <a class="btn blue darken-1 hoverable" onclick="postQuery('f5')">Отправить</a>
+                    <a class="btn blue darken-1 hoverable" onclick="queryToServer('f5')">Отправить</a>
                 </div>
             </div>
         </li>
@@ -98,7 +98,7 @@
                 <h4 class="center-align">Угадай число</h4>
                 <input type="number" placeholder="0" id='magic_number'>
                 <div class="to-right">
-                    <a class="btn blue darken-1 hoverable" onclick="postQuery('f6')">Проверить</a>
+                    <a class="btn blue darken-1 hoverable" onclick="queryToServer('f6')">Проверить</a>
                 </div>
             </div>
         </li>
@@ -115,7 +115,7 @@
                 <input type="number" id="t31_a" value="0">
                 <input type="number" id="t31_b" value="0">
                 <div class="to-right">
-                    <a class="btn blue darken-1 hoverable" onclick="postQuery('t1')">Проверить</a>
+                    <a class="btn blue darken-1 hoverable" onclick="queryToServer('t1')">Проверить</a>
                 </div>
             </div>
         </li>
@@ -133,7 +133,7 @@
                     <option value="/">разделить</option>
                 </select>
                 <div class="to-right">
-                    <a class="btn blue darken-1 hoverable" onclick="postQuery('t2')">Вычислить</a>
+                    <a class="btn blue darken-1 hoverable" onclick="queryToServer('t2')">Вычислить</a>
                 </div>
             </div>
         </li>
@@ -150,7 +150,7 @@
                     <option value="4">составные</option>
                 </select>
                 <div class="to-right">
-                    <a class="btn blue darken-1 hoverable" onclick="postQuery('t3')">Получить</a>
+                    <a class="btn blue darken-1 hoverable" onclick="queryToServer('t3')">Получить</a>
                 </div>
             </div>
         </li>
@@ -161,7 +161,7 @@
                 <h4 class="center-align">Авторизация</h4>
                 <input type="text" id="t34_login" placeholder="Ваш логин">
                 <div class="to-right">
-                    <a class="btn blue darken-1 hoverable" onclick="postQuery('t4')">Вычислить</a>
+                    <a class="btn blue darken-1 hoverable" onclick="queryToServer('t4')">Вычислить</a>
                 </div>
             </div>
         </li>
@@ -180,7 +180,7 @@
                     </div>
                 <% } %> 
                 <div class="to-right">
-                    <a class="btn blue darken-1 hoverable" onclick="postQuery('t5')">Отправить</a>
+                    <a class="btn blue darken-1 hoverable" onclick="queryToServer('t5')">Отправить</a>
                 </div>
             </div>
         </li>
@@ -193,7 +193,7 @@
                     <h5>#17: </h5>
                     <input type="text" id="t36_number" placeholder="Введите число">
                     <div class="to-right ">
-                        <a class="btn blue darken-1 hoverable" onclick="postQuery('t6_1')">Отправить</a>
+                        <a class="btn blue darken-1 hoverable" onclick="queryToServer('t6_1')">Отправить</a>
                     </div>
                 </div>
 
@@ -201,7 +201,7 @@
                     <h5>#20: </h5>
                     <input type="text" id="t36_message" placeholder="Введите сообщение для шифрования">
                     <div class="to-right">
-                        <a class="btn blue darken-1 hoverable" onclick="postQuery('t6_2')">Отправить</a>
+                        <a class="btn blue darken-1 hoverable" onclick="queryToServer('t6_2')">Отправить</a>
                     </div>
                 </div>
 
@@ -209,7 +209,7 @@
                     <h5>#23: </h5>
                     <input type="text" id="t36_text" placeholder="Введите текст">   
                     <div class="to-right ">
-                        <a class="btn blue darken-1 hoverable" onclick="postQuery('t6_3')">Отправить</a>
+                        <a class="btn blue darken-1 hoverable" onclick="queryToServer('t6_3')">Отправить</a>
                     </div>
                 </div>
                 
