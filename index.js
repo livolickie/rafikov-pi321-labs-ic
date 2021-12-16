@@ -2,14 +2,15 @@ const express = require('express')
 const path = require('path')
 const fs = require('fs')
 const mongo = require('mongodb')
-const { response } = require('express')
 
 
 const app = express()
-const db_client = new mongo.MongoClient("mongodb://localhost:27017/")
 
 //User definitions
 const PORT = process.env.PORT || 8000;
+const MONGO_PORT = process.env.MONGO_PORT || 27017;
+
+// const db_client = new mongo.MongoClient("mongodb://localhost:27017/")
 
 //Middlewares
 app.use(express.json()) //JSON body parser
@@ -282,9 +283,9 @@ app.use((req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server successfully started on ${PORT}`)
-    db_client.connect((err, client) => {
-        if (err) return console.log('Failed to connect MongoDB')
-        app.locals.db = client.db('lab4')
-        console.log('Connected to MongoDB')
-    })
+    // db_client.connect((err, client) => {
+    //     if (err) return console.log('Failed to connect MongoDB')
+    //     app.locals.db = client.db('lab4')
+    //     console.log('Connected to MongoDB')
+    // })
 })
