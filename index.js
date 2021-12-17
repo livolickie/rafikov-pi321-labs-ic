@@ -7,8 +7,16 @@ const app = express()
 
 //User definitions
 const PORT = process.env.PORT || 8000;
-const credentials = JSON.parse(fs.readFileSync('db_credentials.json'))
-const MONGO_CONNECTION_STRING = `mongodb+srv://${credentials.username}:${credentials.password}@${credentials.address}`
+
+let credentials = {}
+if (fs.existsSync('db_credentials.json'))
+    credentials = JSON.parse(fs.readFileSync('db_credentials.json'))
+
+const MONGO_LOGIN = process.env.MONGO_LOGIN || credentials.username
+const MONGO_PASSWORD = process.env.MONGO_PASSWORD || credentials.password
+const MONGO_ADDRESS = process.env.MONGO_ADDRESS || credentials.address
+
+const MONGO_CONNECTION_STRING = `mongodb+srv://${MONGO_LOGIN}:${MONGO_PASSWORD}@${MONGO_ADDRESS}`
 
 const db_client = new mongo.MongoClient(MONGO_CONNECTION_STRING)
 
