@@ -122,6 +122,17 @@ textarea {
     }
 }
 
-.animate__animated.animate__zoomIn {
-    --animate-duration: .5s;
-  }
+select {
+    border: none;
+    border-bottom: 1px solid grey;
+    outline: none;
+    transition: .5s;
+    margin: 0;
+    height: 2.6rem;
+}
+
+select:focus {
+    outline: none;
+    transition: .5s;
+    border-bottom: 1.5px solid rgb(46, 177, 138);
+}

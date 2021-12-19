@@ -9,35 +9,34 @@
         <a class="btn waves-effect blue darken-1" @click="generateReport('excel')">В Excel</a>
     </div>
 
-    <div class="os-edit-side" data-aos="zoom-in">
-        <template v-if="state == 'os'">
+    <div class="os-edit-side" v-if="state == 'os'" data-aos="zoom-in">
             <input type="text" placeholder="Название" v-model="edit.os.name">
             <input type="text" placeholder="Платформа" v-model="edit.os.platform">
             <input type="text" placeholder="Разрядность" v-model="edit.os.bitness">
             <input type="text" placeholder="Разработчик" v-model="edit.os.developer">
             <input type="number" min="0" placeholder="Пользователи" v-model="edit.os.users">
-        </template>
-        
-        <template v-if="state == 'markets'">
-            <input data-aos="zoom-in" type="text" placeholder="Название" v-model="edit.markets.name">
-            <input data-aos="zoom-in" type="text" placeholder="Адрес" v-model="edit.markets.url">
-        </template>
+            <a class="btn waves-effect green" @click="addDoc()">{{edit.current_id == '-1' ? 'Добавить' : 'Сохранить'}}</a>
+    </div>
 
-        <template v-if="state == 'keys'">
-            <input type="text" placeholder="Дата покупки" v-model="edit.keys.purchase_date">
-            <input type="text" placeholder="Дата окончания" v-model="edit.keys.expiration_date">
-            <select v-model="edit.keys.os_id">
-                <option value="" disabled>Выберите</option>
-                <option v-for="doc in os_docs" :value="doc._id">{{doc.name+' / '+ doc.platform + ' / ' + doc.bitness}}</option>
-            </select>
-            <select v-model="edit.keys.market_id">
-                <option value="" disabled>Выберите</option>
-                <option v-for="doc in market_docs" :value="doc._id">{{doc.name + ' / ' + doc.url}}</option>
-            </select>
-            <input type="number" placeholder="Цена" v-model="edit.keys.price">
-            <input type="text" placeholder="Ключ" v-model="edit.keys.key">
-        </template>
+    <div class="os-edit-side" v-if="state == 'markets'" data-aos="zoom-in">
+        <input data-aos="zoom-in" type="text" placeholder="Название" v-model="edit.markets.name">
+        <input data-aos="zoom-in" type="text" placeholder="Адрес" v-model="edit.markets.url">
+        <a class="btn waves-effect green" @click="addDoc()">{{edit.current_id == '-1' ? 'Добавить' : 'Сохранить'}}</a>
+    </div>
 
+    <div class="os-edit-side" v-if="state == 'keys'" data-aos="zoom-in">
+        <input type="text" placeholder="Дата покупки" v-model="edit.keys.purchase_date">
+        <input type="text" placeholder="Дата окончания" v-model="edit.keys.expiration_date">
+        <select class="browser-default" v-model="edit.keys.os_id">
+            <option value="" disabled>Выберите</option>
+            <option v-for="doc in os_docs" :value="doc._id">{{doc.name+' / '+ doc.platform + ' / ' + doc.bitness}}</option>
+        </select>
+        <select class="browser-default" v-model="edit.keys.market_id">
+            <option value="" disabled>Выберите</option>
+            <option v-for="doc in market_docs" :value="doc._id">{{doc.name + ' / ' + doc.url}}</option>
+        </select>
+        <input type="number" placeholder="Цена" v-model="edit.keys.price">
+        <input type="text" placeholder="Ключ" v-model="edit.keys.key">
         <a class="btn waves-effect green" @click="addDoc()">{{edit.current_id == '-1' ? 'Добавить' : 'Сохранить'}}</a>
     </div>
 
@@ -76,6 +75,4 @@
             </ul>
         </template>
     </div>
-
-    <iframe id="my_iframe" style="display:none;"></iframe>
 </main>

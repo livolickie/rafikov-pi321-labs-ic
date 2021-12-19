@@ -18,29 +18,14 @@ var vm = new Vue({
         async getData() {
             if (this.state == 'os') this.os_docs = (await (await fetch(this.url+"?type="+this.state)).json())
             else if (this.state == 'markets') this.market_docs = (await (await fetch(this.url+"?type="+this.state)).json())
-            else {
-                this.key_docs = (await (await fetch(this.url+"?type="+this.state)).json())
-                
-            }
+            else this.key_docs = (await (await fetch(this.url+"?type="+this.state)).json())
         },
         changeState(side) {
-            if (side == this.state) return
-            document.querySelectorAll('.select-wrapper').forEach(el => el.remove())
             this.state = side   
-            this.clearEdit();
             this.getData()
-            if (this.state == 'keys') {
-                setTimeout(() => {
-                    M.FormSelect.init(document.querySelectorAll('select'))
-                }, 50)
-            }
-
-            if (this.state == 'os') {
-                document.querySelector('.os-edit-side').style.gridTemplateColumns = '1fr 1fr 1fr 1fr 1fr 1fr'
-            }
-            else if (this.state == 'markets') {
-                document.querySelector('.os-edit-side').style.gridTemplateColumns = '1fr 1fr 1fr'
-            } 
+            this.clearEdit();
+            if (this.state == 'os') document.querySelector('.os-edit-side').style.gridTemplateColumns = '1fr 1fr 1fr 1fr 1fr 1fr'
+            else if (this.state == 'markets') document.querySelector('.os-edit-side').style.gridTemplateColumns = '1fr 1fr 1fr'
             else document.querySelector('.os-edit-side').style.gridTemplateColumns = '1fr 1fr 1fr 1fr 1fr 1fr 1fr'
         },
         async addDoc() {
@@ -67,7 +52,6 @@ var vm = new Vue({
             }
             if (this.state == 'keys') {
                 this.edit.keys = JSON.parse(JSON.stringify(this.key_docs[id]))
-                setTimeout(() => {M.FormSelect.init(document.querySelectorAll('select'))}, 50)
             }
             this.edit.current_id = id
             M.toast({html: 'Выбрана запись для редактирования'})
@@ -114,7 +98,6 @@ var vm = new Vue({
                 keys: {purchase_date: "", expiration_date: "", os_id: "", market_id: "", price: "", key: ""},
                 current_id: -1
             }
-            setTimeout(() => {M.FormSelect.init(document.querySelectorAll('select'))}, 50)
         },
         generateReport(type) {
             M.toast({html: 'Загрузка отчёта'})
