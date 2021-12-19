@@ -1,19 +1,81 @@
-<main class="container">
-    <h1 data-aos="flip-up" class="center">Этап 4</h1>
-    <!-- <h3 class="center">Вариант 8 - Операционные системы / MongoDB</h3> -->
+<main class="container" id="app">
+    <h1 class="center" data-aos="flip-up">Этап 4</h1>
 
-    <div data-aos="zoom-in" class="os-edit-side">
-        <input id='edit-name' type="text" placeholder="Название">
-        <input id='edit-platform' type="text" placeholder="Платформа">
-        <input id='edit-bitness' type="text" placeholder="Разрядность">
-        <input id='edit-developer' type="text" placeholder="Разработчик">
-        <input id='edit-users' type="number" min="0" placeholder="Пользователи">
-        <a id='btn-save'class="btn waves-effect green">Добавить</a>
+    <div class="switcher" data-aos="zoom-in">
+        <a class="btn waves-effect" @click="changeState('os')">Операционные системы</a>
+        <a class="btn waves-effect" @click="changeState('markets')">Магазины</a>
+        <a class="btn waves-effect" @click="changeState('keys')">Ключи</a>
+        <a class="btn waves-effect blue darken-1" @click="generateReport('pdf')">В PDF</a>
+        <a class="btn waves-effect blue darken-1" @click="generateReport('excel')">В Excel</a>
     </div>
 
-    <div id="os_side">
+    <div class="os-edit-side" data-aos="zoom-in">
+        <template v-if="state == 'os'">
+            <input type="text" placeholder="Название" v-model="edit.os.name">
+            <input type="text" placeholder="Платформа" v-model="edit.os.platform">
+            <input type="text" placeholder="Разрядность" v-model="edit.os.bitness">
+            <input type="text" placeholder="Разработчик" v-model="edit.os.developer">
+            <input type="number" min="0" placeholder="Пользователи" v-model="edit.os.users">
+        </template>
+        
+        <template v-if="state == 'markets'">
+            <input data-aos="zoom-in" type="text" placeholder="Название" v-model="edit.markets.name">
+            <input data-aos="zoom-in" type="text" placeholder="Адрес" v-model="edit.markets.url">
+        </template>
 
+        <template v-if="state == 'keys'">
+            <input type="text" placeholder="Дата покупки" v-model="edit.keys.purchase_date">
+            <input type="text" placeholder="Дата окончания" v-model="edit.keys.expiration_date">
+            <select v-model="edit.keys.os_id">
+                <option value="" disabled>Выберите</option>
+                <option v-for="doc in os_docs" :value="doc._id">{{doc.name+' / '+ doc.platform + ' / ' + doc.bitness}}</option>
+            </select>
+            <select v-model="edit.keys.market_id">
+                <option value="" disabled>Выберите</option>
+                <option v-for="doc in market_docs" :value="doc._id">{{doc.name + ' / ' + doc.url}}</option>
+            </select>
+            <input type="number" placeholder="Цена" v-model="edit.keys.price">
+            <input type="text" placeholder="Ключ" v-model="edit.keys.key">
+        </template>
+
+        <a class="btn waves-effect green" @click="addDoc()">{{edit.current_id == '-1' ? 'Добавить' : 'Сохранить'}}</a>
     </div>
 
-    <div class="fake-block"></div>
+    <div id="render_side">
+        <template v-if="state == 'os'">
+            <ul v-for="doc, i in os_docs" data-aos="fade-right">
+                <li><strong>Название: </strong><span>{{doc.name}}</span></li>
+                <li><strong>Платформа: </strong><span>{{doc.platform}}</span></li>
+                <li><strong>Разрядность: </strong><span>{{doc.bitness}}</span></li>
+                <li><strong>Разработчик: </strong><span>{{doc.developer}}</span></li>
+                <li><strong>Пользователи: </strong><span>{{doc.users}}</span></li>
+                <a class="btn-floating blue waves-effect"><i class="material-icons" @click.prevent="startEdit(i)">edit</i></a>
+                <a class="btn-floating red waves-effect"><i class="material-icons" @click.prevent="removeDoc(i)">delete</i></a>
+            </ul>
+        </template>
+
+        <template v-if="state == 'markets'">
+            <ul v-for="doc, i in market_docs" data-aos="fade-right">
+                <li><strong>Название: </strong><span>{{doc.name}}</span></li>
+                <li><strong>URL: </strong><span>{{doc.url}}</span></li>
+                <a class="btn-floating blue waves-effect"><i class="material-icons" @click.prevent="startEdit(i)">edit</i></a>
+                <a class="btn-floating red waves-effect"><i class="material-icons" @click.prevent="removeDoc(i)">delete</i></a>
+            </ul>
+        </template>
+
+        <template v-if="state == 'keys'">
+            <ul v-for="doc, i in key_docs" data-aos="fade-right">
+                <li><strong>Дата покупки: </strong><span>{{doc.purchase_date}}</span></li>
+                <li><strong>Дата окончания: </strong><span>{{doc.expiration_date}}</span></li>
+                <li><strong>ОС: </strong><span>{{getOSById(doc.os_id)}}</span></li>
+                <li><strong>Магазин:</strong> <span>{{getMarketByID(doc.market_id)}}</span></li>
+                <li><strong>Стоимость: </strong><span>{{doc.price}}</span></li>
+                <li><strong>Ключ: </strong><span>{{doc.key}}</span></li>
+                <a class="btn-floating blue waves-effect"><i class="material-icons" @click.prevent="startEdit(i)">edit</i></a>
+                <a class="btn-floating red waves-effect"><i class="material-icons" @click.prevent="removeDoc(i)">delete</i></a>
+            </ul>
+        </template>
+    </div>
+
+    <iframe id="my_iframe" style="display:none;"></iframe>
 </main>

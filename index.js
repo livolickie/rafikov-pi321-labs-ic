@@ -2,6 +2,8 @@ const express = require('express')
 const path = require('path')
 const fs = require('fs')
 const mongo = require('mongodb')
+const pdfMake = require('pdfmake')
+const excel = require('exceljs')
 
 const app = express()
 
@@ -73,24 +75,150 @@ app.route('/:part').get((req, res, next) => {
     res.render("_master.ejs", data)
 })
 
-app.route('/4/api').get((req, res) => {
-    let os = req.app.locals.db.collection('os')
-    os.find({}).toArray((err, docs) => {
-        if (err) {
-            console.log(err)
-            return res.sendStatus(500)
+app.route('/4/api').get(async (req, res) => {
+    if (req.query.generate) { //Reports
+        let os_docs = await req.app.locals.db.collection('os').find({}).toArray()
+        let market_docs = await req.app.locals.db.collection('markets').find({}).toArray()
+        let key_docs = await req.app.locals.db.collection('keys').find({}).toArray()
+        
+        if (req.query.generate == 'pdf') {
+            let printer = new pdfMake({Roboto:{normal:'./resources/fonts/Roboto-Regular.ttf', bold:'./resources/fonts/Roboto-Bold.ttf'}})
+            let hFS = 8
+            let docDefinition = {
+                content: [
+                    {
+                        table: {
+                            headerRows: 1,
+                            widths: [ 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+                            body: [[
+                                {text:'№, п/п', fontSize:hFS, bold: true},
+                                {text:'Название', fontSize:hFS, bold: true},
+                                {text:'Платформа', fontSize:hFS, bold: true},
+                                {text:'Разрядность', fontSize:hFS, bold: true},
+                                {text:'Разработчик', fontSize:hFS, bold: true},
+                                {text:'Пользователи', fontSize:hFS, bold: true},
+                                {text:'Ключ', fontSize:hFS, bold: true},
+                                {text:'Приобретено', fontSize:hFS, bold: true},
+                                {text:'До', fontSize:hFS, bold: true},
+                                {text:'URL магазина', fontSize:hFS, bold: true},
+                            ]],
+                        }
+                    }
+            ]};         
+
+            let dFS = 9
+            let i = 0
+            key_docs.forEach(key => {
+                let os = os_docs.filter(obj => {
+                    console.log(obj._id.toString() + ' ' + key.os_id.toString())
+                    if (obj._id.toString() == key.os_id.toString()) return true
+                    return false
+                })[0]
+                let market = market_docs.filter(obj => {
+                    if (obj._id.toString() == key.market_id.toString()) return true
+                    return false
+                })[0]
+                docDefinition.content[0].table.body.push([
+                    {text: i, fontSize:dFS},
+                    {text: os.name, fontSize:dFS},
+                    {text: os.platform, fontSize:dFS},
+                    {text: os.bitness, fontSize:dFS},
+                    {text: os.developer, fontSize:dFS},
+                    {text: os.users, fontSize:dFS},
+                    {text: key.key, fontSize:dFS},
+                    {text: key.purchase_date, fontSize:dFS},
+                    {text: key.expiration_date, fontSize:dFS},
+                    {text: market.url, fontSize:dFS},
+                ])
+                i++
+            })
+              
+            let doc = printer.createPdfKitDocument(docDefinition)
+            doc.pipe(res)
+            doc.end()
+        } else {
+            const workbook = new excel.Workbook()
+            const sheet = workbook.addWorksheet('Отчёт')
+            let headerRow = sheet.addRow()
+            
+            headerRow.getCell(1).value = "№, п/п"
+            headerRow.getCell(2).value = "Название"
+            headerRow.getCell(3).value = "Платформа"
+            headerRow.getCell(4).value = "Разрядность"
+            headerRow.getCell(5).value = "Разработчик"
+            headerRow.getCell(6).value = "Пользователи"
+            headerRow.getCell(7).value = "Ключ"
+            headerRow.getCell(8).value = "Приобретено"
+            headerRow.getCell(9).value = "До"
+            headerRow.getCell(10).value = "URL магазина"
+            let i = 0
+            key_docs.forEach(key => {
+                let os = os_docs.filter(obj => {
+                    console.log(obj._id.toString() + ' ' + key.os_id.toString())
+                    if (obj._id.toString() == key.os_id.toString()) return true
+                    return false
+                })[0]
+                let market = market_docs.filter(obj => {
+                    if (obj._id.toString() == key.market_id.toString()) return true
+                    return false
+                })[0]
+                let row = sheet.addRow()
+                row.getCell(1).value = i
+                row.getCell(2).value = os.name
+                row.getCell(3).value = os.platform
+                row.getCell(4).value = os.bitness
+                row.getCell(5).value = os.developer
+                row.getCell(6).value = os.users
+                row.getCell(7).value = os.key
+                row.getCell(8).value = key.purchase_date
+                row.getCell(9).value = key.expiration_date
+                row.getCell(10).value = market.url
+                i++
+            })
+            sheet.columns.forEach(function (column, j) {
+                var maxLength = 0;
+                column["eachCell"]({ includeEmpty: true }, function (cell) {
+                    var columnLength = cell.value ? cell.value.toString().length : 10;
+                    if (columnLength > maxLength ) {
+                        maxLength = columnLength;
+                    }
+                });
+                column.width = maxLength < 15 ? 15 : maxLength;
+            });
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            res.setHeader("Content-Disposition", "attachment; filename=" + "report.xlsx");
+            await workbook.xlsx.write(res)
+            res.end()
         }
-        res.send(docs)
-    })
+    } else {
+        if (!req.query.type) return res.sendStatus(500)
+
+        let docs = req.app.locals.db.collection(req.query.type)
+        docs.find({}).toArray((err, docs) => {
+            if (err) {
+                console.log(err)
+                return res.sendStatus(500)
+            }
+            res.send(docs)
+        })
+    }
 }).post((req, res) => {
-    let os = req.app.locals.db.collection('os')
-    os.insertOne({
-        name: req.body.name,
-        platform: req.body.platform,
-        bitness: req.body.bitness,
-        developer: req.body.developer,
-        users_count: Number.parseInt(req.body.users),
-    }, (err) => {
+    if (!req.query.type) return res.sendStatus(500)
+    let data = req.body.data
+
+    //Type corrections
+    if (data.users) data.users = Number.parseInt(data.users)
+    if (data.price) {
+        data.price = Number.parseFloat(data.price)
+        data.os_id = new mongo.ObjectId(data.os_id)
+        data.market_id = new mongo.ObjectId(data.market_id)
+    }
+
+    console.log(data)
+
+    let docs = req.app.locals.db.collection(req.query.type)
+    docs.insertOne(data, (err) => {
+        console.log(err)
         if (err) {
             res.sendStatus(500)
         }
@@ -98,29 +226,46 @@ app.route('/4/api').get((req, res) => {
     }) 
 })
 .put((req, res) => {
-    let os = req.app.locals.db.collection('os')
-    os.findOneAndUpdate({_id: new mongo.ObjectId(req.body._id)}, {$set: {
-        name: req.body.name,
-        platform: req.body.platform,
-        bitness: req.body.bitness,
-        developer: req.body.developer,
-        users_count: Number.parseInt(req.body.users)}
-    }, (err) => {
+    let docs = req.app.locals.db.collection(req.query.type)
+    let data = req.body.data
+
+    //Type corrections
+    if (data.users) data.users = Number.parseInt(data.users)
+    if (data.price) {
+        data.price = Number.parseFloat(data.price)
+        data.os_id = new mongo.ObjectId(data.os_id)
+        data.market_id = new mongo.ObjectId(data.market_id)
+    }
+
+    let _id = data._id 
+    delete data._id //Strange moment
+
+    docs.findOneAndUpdate({_id: new mongo.ObjectId(_id)}, {$set: data}, (err) => {
         if (err) {
+            console.log(err)
             res.sendStatus(500)
         }
         else res.sendStatus(200)
     }) 
 })
 .delete((req, res) => {
-    let os = req.app.locals.db.collection('os')
-    os.findOneAndDelete({
+    let docs = req.app.locals.db.collection(req.query.type)
+    docs.findOneAndDelete({
         _id: new mongo.ObjectId(req.body._id)
     }, (err) => {
         if (err) {
             res.sendStatus(500)
         }
-        else res.sendStatus(200)
+        else {
+            //CASCADE delete
+            if (req.query.type == 'os') {
+                req.app.locals.db.collection('keys').deleteMany({os_id: new mongo.ObjectId(req.body._id)})
+            }
+            if (req.query.type == 'markets') {
+                req.app.locals.db.collection('keys').deleteMany({market_id: new mongo.ObjectId(req.body._id)})
+            }
+            res.sendStatus(200)
+        }
     }) 
 })
 

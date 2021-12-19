@@ -37,10 +37,11 @@ header .container {
 }
 
 .side1 {
-    float: left;
+    position: absolute;
 }
 .side2 {
-    float: right;
+    right: 0;
+    position: absolute;
 }
 
 .letter {
@@ -92,7 +93,7 @@ textarea {
     align-items: center;
 }
 
-#os_side {
+#render_side {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 1rem;
@@ -103,12 +104,24 @@ textarea {
     font-size: 1.2rem;
 }
 
-#os_side .btn-floating {
+#render_side .btn-floating {
     margin: .25rem .5rem 0 0;
 }
 
+.switcher {
+    margin-bottom: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr .5fr .5fr;
+    grid-gap: 3rem;
+}
+
 @media screen and (max-width: 900px) {
-    .os-edit-side, #os_side {
+    .os-edit-side, #render_side, .switcher {
         grid-template-columns: 1fr;
+        justify-items: center;
     }
 }
+
+.animate__animated.animate__zoomIn {
+    --animate-duration: .5s;
+  }
