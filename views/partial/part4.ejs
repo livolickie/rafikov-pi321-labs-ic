@@ -1,78 +1,153 @@
 <main class="container" id="app">
-    <h1 class="center" data-aos="flip-up">Этап 4</h1>
+    <h1 class="center" data-aos="flip-up">Этап 4 (5)</h1>
 
-    <div class="switcher" data-aos="zoom-in">
-        <a class="btn waves-effect" @click="changeState('os')">Операционные системы</a>
-        <a class="btn waves-effect" @click="changeState('markets')">Магазины</a>
-        <a class="btn waves-effect" @click="changeState('keys')">Ключи</a>
-        <a class="btn waves-effect blue darken-1" @click="generateReport('pdf')">В PDF</a>
-        <a class="btn waves-effect blue darken-1" @click="generateReport('excel')">В Excel</a>
-    </div>
+    <template v-if="user.type != -1">
 
-    <div class="os-edit-side" v-if="state == 'os'" data-aos="zoom-in">
+        <div class="switcher" data-aos="zoom-in">
+            <a class="btn waves-effect" @click="changeState('os')">ОС</a>
+            <a class="btn waves-effect" @click="changeState('markets')">Магазины</a>
+            <a class="btn waves-effect" @click="changeState('keys')">Ключи</a>
+            <a class="btn waves-effect" @click="changeState('users')" v-if="user.type == 2">Пользователи</a>
+            <a class="btn waves-effect blue darken-1" @click="generateReport('pdf')">В PDF</a>
+            <a class="btn waves-effect blue darken-1" @click="generateReport('excel')">В Excel</a>
+            <!-- <a class="btn waves-effect red darken-1" @click="logout()">Выйти</a> -->
+        </div>
+
+        <div class="os-edit-side" v-if="state == 'os'" data-aos="zoom-in">
             <input type="text" placeholder="Название" v-model="edit.os.name">
             <input type="text" placeholder="Платформа" v-model="edit.os.platform">
             <input type="text" placeholder="Разрядность" v-model="edit.os.bitness">
             <input type="text" placeholder="Разработчик" v-model="edit.os.developer">
             <input type="number" min="0" placeholder="Пользователи" v-model="edit.os.users">
             <a class="btn waves-effect green" @click="addDoc()">{{edit.current_id == '-1' ? 'Добавить' : 'Сохранить'}}</a>
-    </div>
+        </div>
 
-    <div class="os-edit-side" v-if="state == 'markets'" data-aos="zoom-in">
-        <input data-aos="zoom-in" type="text" placeholder="Название" v-model="edit.markets.name">
-        <input data-aos="zoom-in" type="text" placeholder="Адрес" v-model="edit.markets.url">
-        <a class="btn waves-effect green" @click="addDoc()">{{edit.current_id == '-1' ? 'Добавить' : 'Сохранить'}}</a>
-    </div>
+        <div class="os-edit-side" v-if="state == 'markets'" data-aos="zoom-in">
+            <input data-aos="zoom-in" type="text" placeholder="Название" v-model="edit.markets.name">
+            <input data-aos="zoom-in" type="text" placeholder="Адрес" v-model="edit.markets.url">
+            <a class="btn waves-effect green" @click="addDoc()">{{edit.current_id == '-1' ? 'Добавить' : 'Сохранить'}}</a>
+        </div>
 
-    <div class="os-edit-side" v-if="state == 'keys'" data-aos="zoom-in">
-        <input type="text" placeholder="Дата покупки" v-model="edit.keys.purchase_date">
-        <input type="text" placeholder="Дата окончания" v-model="edit.keys.expiration_date">
-        <select class="browser-default" v-model="edit.keys.os_id">
-            <option value="" disabled>Выберите</option>
-            <option v-for="doc in os_docs" :value="doc._id">{{doc.name+' / '+ doc.platform + ' / ' + doc.bitness}}</option>
-        </select>
-        <select class="browser-default" v-model="edit.keys.market_id">
-            <option value="" disabled>Выберите</option>
-            <option v-for="doc in market_docs" :value="doc._id">{{doc.name + ' / ' + doc.url}}</option>
-        </select>
-        <input type="number" placeholder="Цена" v-model="edit.keys.price">
-        <input type="text" placeholder="Ключ" v-model="edit.keys.key">
-        <a class="btn waves-effect green" @click="addDoc()">{{edit.current_id == '-1' ? 'Добавить' : 'Сохранить'}}</a>
-    </div>
+        <div class="os-edit-side" v-if="state == 'users'" data-aos="zoom-in">
+            <input data-aos="zoom-in" type="text" placeholder="Логин" v-model="edit.users.username">
+            <input data-aos="zoom-in" type="password" placeholder="Пароль" v-model="edit.users.password">
+            <select v-model="edit.users.type" class="browser-default">
+                <option disabled value="0">Выберите роль</option>
+                <option value="1">Оператор</option>
+                <option value="2">Администратор</option>
+            </select>
+            <a class="btn waves-effect green" @click="addDoc()" v-if="user.type == 2 || edit.current_id != '-1'">{{edit.current_id == '-1' ? 'Добавить' : 'Сохранить'}}</a>
+        </div>
 
-    <div id="render_side">
-        <template v-if="state == 'os'">
-            <ul v-for="doc, i in os_docs" data-aos="fade-right">
-                <li><strong>Название: </strong><span>{{doc.name}}</span></li>
-                <li><strong>Платформа: </strong><span>{{doc.platform}}</span></li>
-                <li><strong>Разрядность: </strong><span>{{doc.bitness}}</span></li>
-                <li><strong>Разработчик: </strong><span>{{doc.developer}}</span></li>
-                <li><strong>Пользователи: </strong><span>{{doc.users}}</span></li>
-                <a class="btn-floating blue waves-effect"><i class="material-icons" @click.prevent="startEdit(i)">edit</i></a>
-                <a class="btn-floating red waves-effect"><i class="material-icons" @click.prevent="removeDoc(i)">delete</i></a>
+        <div class="os-edit-side" v-if="state == 'keys'" data-aos="zoom-in">
+            <input type="date" placeholder="Дата покупки" v-model="edit.keys.purchase_date">
+            <input type="date" placeholder="Дата окончания" v-model="edit.keys.expiration_date">
+            <select class="browser-default" v-model="edit.keys.os_id">
+                <option value="" disabled>Выберите</option>
+                <option v-for="doc in os_docs" :value="doc._id">{{doc.name+' / '+ doc.platform + ' / ' + doc.bitness}}</option>
+            </select>
+            <select class="browser-default" v-model="edit.keys.market_id">
+                <option value="" disabled>Выберите</option>
+                <option v-for="doc in market_docs" :value="doc._id">{{doc.name + ' / ' + doc.url}}</option>
+            </select>
+            <input type="number" placeholder="Цена" v-model="edit.keys.price">
+            <input type="text" placeholder="Ключ" v-model="edit.keys.key">
+            <a class="btn waves-effect green" @click="addDoc()">{{edit.current_id == '-1' ? 'Добавить' : 'Сохранить'}}</a>
+        </div>
+
+        <div id="render_side">
+            <template v-if="state == 'os'">
+                <ul v-for="doc, i in os_docs" data-aos="fade-right">
+                    <li><strong>Название: </strong><span>{{doc.name}}</span></li>
+                    <li><strong>Платформа: </strong><span>{{doc.platform}}</span></li>
+                    <li><strong>Разрядность: </strong><span>{{doc.bitness}}</span></li>
+                    <li><strong>Разработчик: </strong><span>{{doc.developer}}</span></li>
+                    <li><strong>Пользователи: </strong><span>{{doc.users}}</span></li>
+                    <a class="btn-floating blue waves-effect"><i class="material-icons" @click.prevent="startEdit(i)">edit</i></a>
+                    <a class="btn-floating red waves-effect" v-if="user.type == 2"><i class="material-icons" @click.prevent="removeDoc(i)" >delete</i></a>
+                </ul>
+            </template>
+
+            <template v-if="state == 'markets'">
+                <ul v-for="doc, i in market_docs" data-aos="fade-right">
+                    <li><strong>Название: </strong><span>{{doc.name}}</span></li>
+                    <li><strong>URL: </strong><span>{{doc.url}}</span></li>
+                    <a class="btn-floating blue waves-effect"><i class="material-icons" @click.prevent="startEdit(i)">edit</i></a>
+                    <a class="btn-floating red waves-effect" v-if="user.type == 2"><i class="material-icons" @click.prevent="removeDoc(i)">delete</i></a>
+                </ul>
+            </template>
+
+            <template v-if="state == 'keys'">
+                <ul v-for="doc, i in key_docs" data-aos="fade-right">
+                    <li><strong>Дата покупки: </strong><span>{{doc.purchase_date}}</span></li>
+                    <li><strong>Дата окончания: </strong><span>{{doc.expiration_date}}</span></li>
+                    <li><strong>ОС: </strong><span>{{getOSById(doc.os_id)}}</span></li>
+                    <li><strong>Магазин:</strong> <span>{{getMarketByID(doc.market_id)}}</span></li>
+                    <li><strong>Стоимость: </strong><span>{{doc.price}}</span></li>
+                    <li><strong>Ключ: </strong><span>{{doc.key}}</span></li>
+                    <a class="btn-floating blue waves-effect"><i class="material-icons" @click.prevent="startEdit(i)">edit</i></a>
+                    <a class="btn-floating red waves-effect" v-if="user.type == 2"><i class="material-icons" @click.prevent="removeDoc(i)">delete</i></a>
+                </ul>
+            </template>
+
+            <template v-if="state == 'users' && user.type == 2">
+                <ul v-for="doc, i in user_docs" data-aos="fade-right">
+                    <li><strong v-if="doc.username == user.username" class="white-text green p-1">Это вы</strong></li>
+                    <li><strong>Логин: </strong><span>{{doc.username}}</span></li>
+                    <li><strong>Пароль: </strong><span class="white-text red">Зашифрован SHA-1</span></li>
+                    <li><strong>Роль: </strong><span>{{doc.type == '1' ? 'Оператор' : 'Администратор'}}</span></li>
+                    <a class="btn-floating blue waves-effect" v-if="doc.username != user.username"><i class="material-icons" @click.prevent="startEdit(i)">edit</i></a>
+                    <a class="btn-floating red waves-effect" v-if="doc.username != user.username"><i class="material-icons" @click.prevent="removeDoc(i)">delete</i></a>
+                </ul>
+            </template>
+        </div>
+
+        <div class="tap-target blue darken-1" data-target="profile_menu">
+            <div class="tap-target-content">
+                <h5 class="white-text">Ваш профиль</h5>
+                <p class="white-text">Для редактирования или выхода из аккаунта нажмите сюда.</p>
+            </div>
+        </div>
+
+        <div class="fixed-action-btn" id="profile_menu">
+            <a class="btn-floating btn-large blue darken-1 waves-effect hoverable">
+                <i class="large material-icons">mode_edit</i>
+            </a>
+            <ul>
+                <li><a class="btn-floating grey modal-trigger" data-target="modal_profile"><i class="material-icons">account_circle</i></a></li>
+                <li><a class="btn-floating red darken-1"><i class="material-icons" @click.prevent="logout()">exit_to_app</i></a></li>
             </ul>
-        </template>
+        </div>    
 
-        <template v-if="state == 'markets'">
-            <ul v-for="doc, i in market_docs" data-aos="fade-right">
-                <li><strong>Название: </strong><span>{{doc.name}}</span></li>
-                <li><strong>URL: </strong><span>{{doc.url}}</span></li>
-                <a class="btn-floating blue waves-effect"><i class="material-icons" @click.prevent="startEdit(i)">edit</i></a>
-                <a class="btn-floating red waves-effect"><i class="material-icons" @click.prevent="removeDoc(i)">delete</i></a>
-            </ul>
-        </template>
+        <div id="modal_profile" class="modal modal-fixed-footer">
+            <div class="modal-content">
+                <h4>Настройка профиля</h4>
+                <input type="text" placeholder="Ваш логин" v-model="reg.login">
+                <input type="password" placeholder="Новый пароль" v-model="reg.password">
+                <input type="password" placeholder="Повторите пароль" v-model="reg.passwordR">
+            </div>
+            <div class="modal-footer">
+                <a class="modal-close waves-effect waves-green btn-flat">Закрыть</a>
+                <a class="waves-effect waves-green btn-flat" @click.prevent="updateAccount()">Обновить</a>
+            </div>
+        </div>
+    </template>
 
-        <template v-if="state == 'keys'">
-            <ul v-for="doc, i in key_docs" data-aos="fade-right">
-                <li><strong>Дата покупки: </strong><span>{{doc.purchase_date}}</span></li>
-                <li><strong>Дата окончания: </strong><span>{{doc.expiration_date}}</span></li>
-                <li><strong>ОС: </strong><span>{{getOSById(doc.os_id)}}</span></li>
-                <li><strong>Магазин:</strong> <span>{{getMarketByID(doc.market_id)}}</span></li>
-                <li><strong>Стоимость: </strong><span>{{doc.price}}</span></li>
-                <li><strong>Ключ: </strong><span>{{doc.key}}</span></li>
-                <a class="btn-floating blue waves-effect"><i class="material-icons" @click.prevent="startEdit(i)">edit</i></a>
-                <a class="btn-floating red waves-effect"><i class="material-icons" @click.prevent="removeDoc(i)">delete</i></a>
-            </ul>
-        </template>
-    </div>
+    <template v-else>
+        <div class="row hide">
+            <p class="col s12"></p>
+            <a class="btn-large blue darken-1 waves-effect col s6 offset-s3 modal-trigger" data-target="modal_auth">Авторизоваться</a>
+        </div>
+        <div id="modal_auth" class="modal modal-fixed-footer">
+            <div class="modal-content">
+                <h4>Авторизация</h4>
+                <input type="text" placeholder="Логин" v-model="auth.login">
+                <input type="password" placeholder="Пароль" v-model="auth.password">
+            </div>
+            <div class="modal-footer">
+                <a class="modal-close waves-effect waves-green btn-flat">Закрыть</a>
+                <a class="waves-effect waves-green btn-flat" @click.prevent="login()">Авторизоваться</a>
+            </div>
+        </div>
+    </template>
 </main>

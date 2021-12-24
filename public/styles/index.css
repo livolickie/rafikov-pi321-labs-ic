@@ -111,14 +111,14 @@ textarea {
 .switcher {
     margin-bottom: 3rem;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr .5fr .5fr;
-    grid-gap: 3rem;
+    grid-template-columns: 1fr 1fr 1fr 1fr .75fr .75fr;
+    grid-gap: 1.25rem;
 }
 
 @media screen and (max-width: 900px) {
     .os-edit-side, #render_side, .switcher {
         grid-template-columns: 1fr;
-        justify-items: center;
+        /* justify-items: center; */
     }
 }
 
@@ -135,4 +135,25 @@ select:focus {
     outline: none;
     transition: .5s;
     border-bottom: 1.5px solid rgb(46, 177, 138);
+}
+
+.tap-target-wrapper .btn-floating {
+    display: none;
+}
+
+#profile_menu {
+    z-index: 1000;
+    bottom: 2rem;
+}
+
+.tap-target-wave {
+    margin-left: 12px;
+    margin-top: 7px;
+}
+
+#modal_profile {
+    max-height: 24rem;
+}
+#modal_auth {
+    max-height: 18rem;
 }

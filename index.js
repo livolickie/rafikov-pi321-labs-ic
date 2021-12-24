@@ -4,6 +4,16 @@ const fs = require('fs')
 const mongo = require('mongodb')
 const pdfMake = require('pdfmake')
 const excel = require('exceljs')
+const crypto = require('crypto')
+// const https = require('https')
+const jwt = require('./utils')
+
+// const httpsOptions = {
+//     key: fs.readFileSync("key.pem"),
+//     cert: fs.readFileSync("cert.pem"),
+// }
+
+const PRIVATE_KEY = 'FallInLove_NEXT'
 
 const app = express()
 
@@ -24,11 +34,20 @@ const db_client = new mongo.MongoClient(MONGO_CONNECTION_STRING)
 
 //Middlewares
 app.use(express.json()) //JSON body parser
-app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'public')))
-app.set("view engine", "ejs") //We will use Pug as a render engine
 
-app.route('/').get((req, res) => res.redirect('/1'))
+//Auth middleware
+app.use((req, res, next) => {
+    if (req.headers.authorization) req.user = jwt.verify(PRIVATE_KEY, req.headers.authorization)
+    next()
+})
+
+//Settings
+app.set('views', path.join(__dirname, 'views'))
+app.set("view engine", "ejs") //We will use EJS as a render engine
+
+//Routing
+app.route('/').get((req, res) => res.redirect('/1')) //Redirect index page to page1
 
 app.route('/:part').get((req, res, next) => {
     let part = req.params.part
@@ -37,12 +56,8 @@ app.route('/:part').get((req, res, next) => {
 
     let data = {
         title: `Part ${req.params.part}`,
-        helpers: {
-            getRandomInt(min, max) {
-                min = Math.ceil(min);
-                max = Math.floor(max);
-                return Math.floor(Math.random() * (max - min + 1)) + min;
-            }
+        helpers: { 
+            getRandomInt: (min, max) => Math.floor(Math.random() * (Math.ceil(max) - Math.ceil(min) + 1)) + Math.ceil(min)
         },
         renderPage: `partial/part${part}.ejs`
     }
@@ -75,12 +90,21 @@ app.route('/:part').get((req, res, next) => {
     res.render("_master.ejs", data)
 })
 
+
+
 app.route('/4/api').get(async (req, res) => {
+
+    if (!req.user) return res.sendStatus(401)
+
     if (req.query.generate) { //Reports
         let os_docs = await req.app.locals.db.collection('os').find({}).toArray()
         let market_docs = await req.app.locals.db.collection('markets').find({}).toArray()
         let key_docs = await req.app.locals.db.collection('keys').find({}).toArray()
         
+        let headers = [
+            '№, п/п', 'Название', 'Платформа', 'Разрядность', 'Разработчик', 'Пользователи', 'Ключ', 'Приобретено', 'До', 'URL магазина'
+        ]
+
         if (req.query.generate == 'pdf') {
             let printer = new pdfMake({Roboto:{normal:'./resources/fonts/Roboto-Regular.ttf', bold:'./resources/fonts/Roboto-Bold.ttf'}})
             let hFS = 8
@@ -90,27 +114,21 @@ app.route('/4/api').get(async (req, res) => {
                         table: {
                             headerRows: 1,
                             widths: [ 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
-                            body: [[
-                                {text:'№, п/п', fontSize:hFS, bold: true},
-                                {text:'Название', fontSize:hFS, bold: true},
-                                {text:'Платформа', fontSize:hFS, bold: true},
-                                {text:'Разрядность', fontSize:hFS, bold: true},
-                                {text:'Разработчик', fontSize:hFS, bold: true},
-                                {text:'Пользователи', fontSize:hFS, bold: true},
-                                {text:'Ключ', fontSize:hFS, bold: true},
-                                {text:'Приобретено', fontSize:hFS, bold: true},
-                                {text:'До', fontSize:hFS, bold: true},
-                                {text:'URL магазина', fontSize:hFS, bold: true},
-                            ]],
+                            body: [[]],
                         }
                     }
             ]};         
+
+            headers.forEach(header => {
+                docDefinition.content[0].table.body[0].push({
+                    text: header, fontSize:hFS, bold: true
+                })
+            })
 
             let dFS = 9
             let i = 0
             key_docs.forEach(key => {
                 let os = os_docs.filter(obj => {
-                    console.log(obj._id.toString() + ' ' + key.os_id.toString())
                     if (obj._id.toString() == key.os_id.toString()) return true
                     return false
                 })[0]
@@ -140,21 +158,16 @@ app.route('/4/api').get(async (req, res) => {
             const workbook = new excel.Workbook()
             const sheet = workbook.addWorksheet('Отчёт')
             let headerRow = sheet.addRow()
+
+            let i = 1
+            headers.forEach(header => {
+                headerRow.getCell(i).value = header
+                i++
+            })
             
-            headerRow.getCell(1).value = "№, п/п"
-            headerRow.getCell(2).value = "Название"
-            headerRow.getCell(3).value = "Платформа"
-            headerRow.getCell(4).value = "Разрядность"
-            headerRow.getCell(5).value = "Разработчик"
-            headerRow.getCell(6).value = "Пользователи"
-            headerRow.getCell(7).value = "Ключ"
-            headerRow.getCell(8).value = "Приобретено"
-            headerRow.getCell(9).value = "До"
-            headerRow.getCell(10).value = "URL магазина"
-            let i = 0
+            i = 0
             key_docs.forEach(key => {
                 let os = os_docs.filter(obj => {
-                    console.log(obj._id.toString() + ' ' + key.os_id.toString())
                     if (obj._id.toString() == key.os_id.toString()) return true
                     return false
                 })[0]
@@ -192,6 +205,7 @@ app.route('/4/api').get(async (req, res) => {
         }
     } else {
         if (!req.query.type) return res.sendStatus(500)
+        if (req.query.type == 'users' && req.user.type != 2) return res.sendStatus(401)
 
         let docs = req.app.locals.db.collection(req.query.type)
         docs.find({}).toArray((err, docs) => {
@@ -199,10 +213,14 @@ app.route('/4/api').get(async (req, res) => {
                 console.log(err)
                 return res.sendStatus(500)
             }
+            if (req.query.type == 'users') docs.forEach(doc => doc.password = "")
             res.send(docs)
         })
     }
-}).post((req, res) => {
+}).post(async (req, res) => {
+    if (!req.user) return res.sendStatus(401)
+    if (req.query.type == 'users' && req.user.type != 2) return res.sendStatus(401)
+
     if (!req.query.type) return res.sendStatus(500)
     let data = req.body.data
 
@@ -214,20 +232,30 @@ app.route('/4/api').get(async (req, res) => {
         data.market_id = new mongo.ObjectId(data.market_id)
     }
 
-    console.log(data)
-
     let docs = req.app.locals.db.collection(req.query.type)
+
+    //User checks
+    if (req.query.type == 'users') {
+        if ((await docs.find({username: data.username}).toArray()).length != 0) return res.sendStatus(500)
+        data.password = crypto.createHash('sha1').update(data.password).digest('hex')
+        data.type = Number.parseInt(data.type)
+    }
+
     docs.insertOne(data, (err) => {
-        console.log(err)
+        // console.log(err)
         if (err) {
             res.sendStatus(500)
         }
         else res.sendStatus(200)
     }) 
 })
-.put((req, res) => {
+.put(async (req, res) => {
+    if (!req.user) return res.sendStatus(401)
+
+    if (req.query.type == 'users' && (req.user.type != 2 && req.body.data._id)) return res.sendStatus(401)
+
     let docs = req.app.locals.db.collection(req.query.type)
-    let data = req.body.data
+    let data = req.body.data 
 
     //Type corrections
     if (data.users) data.users = Number.parseInt(data.users)
@@ -240,15 +268,28 @@ app.route('/4/api').get(async (req, res) => {
     let _id = data._id 
     delete data._id //Strange moment
 
+    if (!_id) _id = req.user.id //Self edit
+
+    //User checks
+    if (req.query.type == 'users') {
+        let test_user = (await docs.find({username: data.username}).toArray())[0]
+        if (test_user && test_user._id.toString() != _id) return res.sendStatus(500)
+        data.type = Number.parseInt(data.type)
+        if (data.password.length != 0) data.password = crypto.createHash('sha1').update(data.password).digest('hex')
+        else delete data.password
+    }
+
     docs.findOneAndUpdate({_id: new mongo.ObjectId(_id)}, {$set: data}, (err) => {
         if (err) {
-            console.log(err)
             res.sendStatus(500)
         }
         else res.sendStatus(200)
     }) 
 })
 .delete((req, res) => {
+    if (!req.user) return res.sendStatus(401)
+    if (req.user.type != 2) return res.sendStatus(401)
+
     let docs = req.app.locals.db.collection(req.query.type)
     docs.findOneAndDelete({
         _id: new mongo.ObjectId(req.body._id)
@@ -267,6 +308,21 @@ app.route('/4/api').get(async (req, res) => {
             res.sendStatus(200)
         }
     }) 
+})
+
+app.route('/api/auth').put(async (req, res) => {
+    let login = req.body.login
+    let password = req.body.password
+
+    let user = (await req.app.locals.db.collection('users').find({username: login}).toArray())[0]
+    if (user) {
+        if (user.password == crypto.createHash('sha1').update(password).digest('hex')) {
+            //Generate JWT
+            let jwt_token = jwt.generate(PRIVATE_KEY, {username: user.username, type: user.type, date: new Date().toISOString(), id: user._id})
+            return res.send({ok: true, token: jwt_token, username: user.username, type: user.type})
+        }
+    }
+    res.send({ok: false})
 })
 
 app.route('/3/api').get((req, res) => {
