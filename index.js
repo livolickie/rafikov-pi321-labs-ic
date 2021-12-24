@@ -5,13 +5,7 @@ const mongo = require('mongodb')
 const pdfMake = require('pdfmake')
 const excel = require('exceljs')
 const crypto = require('crypto')
-// const https = require('https')
 const jwt = require('./utils')
-
-// const httpsOptions = {
-//     key: fs.readFileSync("key.pem"),
-//     cert: fs.readFileSync("cert.pem"),
-// }
 
 const PRIVATE_KEY = 'FallInLove_NEXT'
 
@@ -37,8 +31,10 @@ app.use(express.json()) //JSON body parser
 app.use(express.static(path.join(__dirname, 'public')))
 
 //Auth middleware
-app.use((req, res, next) => {
-    if (req.headers.authorization) req.user = jwt.verify(PRIVATE_KEY, req.headers.authorization)
+app.use(async (req, res, next) => {
+    if (req.headers.authorization && (await req.app.locals.db.collection('jwt-blacklist').find({token: req.headers.authorization}).toArray()).length == 0) {
+        req.user = jwt.verify(PRIVATE_KEY, req.headers.authorization)
+    }
     next()
 })
 
@@ -317,8 +313,12 @@ app.route('/api/auth').put(async (req, res) => {
     let user = (await req.app.locals.db.collection('users').find({username: login}).toArray())[0]
     if (user) {
         if (user.password == crypto.createHash('sha1').update(password).digest('hex')) {
+            //Add old JWT to blacklist
+            if (user.jwt_token) req.app.locals.db.collection('jwt-blacklist').insertOne({token: user.jwt_token})
             //Generate JWT
             let jwt_token = jwt.generate(PRIVATE_KEY, {username: user.username, type: user.type, date: new Date().toISOString(), id: user._id})
+            //Add token to user in db
+            await req.app.locals.db.collection('users').findOneAndUpdate({username: login}, {$set: {jwt_token: jwt_token}})
             return res.send({ok: true, token: jwt_token, username: user.username, type: user.type})
         }
     }

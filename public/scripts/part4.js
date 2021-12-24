@@ -25,10 +25,15 @@ var vm = new Vue({
     },
     methods: {
         async getData() {
-            if (this.state == 'os') this.os_docs = (await (await fetch(this.url+"?type="+this.state, {headers: {'Authorization': this.user.token}})).json())
-            else if (this.state == 'markets') this.market_docs = (await (await fetch(this.url+"?type="+this.state, {headers: {'Authorization': this.user.token}})).json())
-            else if (this.state == 'keys') this.key_docs = (await (await fetch(this.url+"?type="+this.state, {headers: {'Authorization': this.user.token}})).json())
-            else this.user_docs = (await (await fetch(this.url+"?type="+this.state, {headers: {'Authorization': this.user.token}})).json())
+            let response = await fetch(this.url+"?type="+this.state, {headers: {'Authorization': this.user.token}})
+            if (response.status == 401) {
+                M.toast({html: 'Ваша сессия истекла'})
+                return this.logout()
+            }
+            if (this.state == 'os') this.os_docs = await response.json()
+            else if (this.state == 'markets') this.market_docs = await response.json()
+            else if (this.state == 'keys') this.key_docs = await response.json()
+            else this.user_docs = await response.json()
         },
         changeState(side) {
             this.state = side   
@@ -47,6 +52,10 @@ var vm = new Vue({
                     data: this.state == 'os' ? this.edit.os : (this.state == 'markets' ? this.edit.markets : (this.state == 'keys' ? this.edit.keys : this.edit.users))
                 })
             })
+            if (response.status == 401) {
+                M.toast({html: 'Ваша сессия истекла!'})
+                return this.logout()
+            }
             if (response.status == 200) {
                 M.toast({html: 'Записи обновлены'})
                 this.clearEdit()
@@ -79,6 +88,10 @@ var vm = new Vue({
                     _id: this.state == 'os' ? this.os_docs[id]._id : (this.state == 'markets' ? this.market_docs[id]._id : (this.state == 'keys' ? this.key_docs[id]._id : this.user_docs[id]._id))
                 })
             })
+            if (response.status == 401) {
+                M.toast({html: 'Ваша сессия истекла!'})
+                return this.logout()
+            }
             if (response.status == 200) {
                 M.toast({html: 'Запись удалена'})
                 this.getData()
