@@ -155,10 +155,10 @@ var vm = new Vue({
                 document.querySelector('.row').classList.remove('hide')
             }
         },
-        afterAuth(first = false) {
-            this.state = 'keys'; this.getData()
-            this.state = 'markets'; this.getData()
-            this.state = 'os'; this.getData()
+        async afterAuth(first = false) {
+            this.state = 'keys';  await this.getData()
+            this.state = 'markets'; await this.getData()
+            this.state = 'os'; await this.getData()
             this.reg.login = this.user.username
             setTimeout(() => {
                 M.FloatingActionButton.init(document.querySelectorAll('.fixed-action-btn'), {hoverEnabled: false})
