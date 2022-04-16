@@ -1,0 +1,131 @@
+<main class="container" id="app">
+    <h1 class="center" data-aos="flip-up">Этап 5 (1)</h1>
+    <h5 class="center">Введение в JavaScript</h5>
+
+    <ul class="collapsible popout" data-aos="fade-right">
+        
+        <li id="task1">
+            <script>
+                function greeting() {
+                    if (!document.querySelector('li#task1').classList.contains('active'))
+                        alert('Добро пожаловать')
+                }
+            </script>
+
+            <div class="collapsible-header" onclick="greeting()">
+                <i class="material-icons">whatshot</i>Задание №1
+            </div>
+
+            <div class="collapsible-body" >
+                <h4>Абзац 1</h4>
+                <script>
+                    document.write('Добро пожаловать')
+                </script>
+                <h4>Абзац 2</h4>
+            </div>
+        </li>
+
+        <li id="task2">
+            <div class="collapsible-header" onclick="greetingByTask2()">
+                <i class="material-icons">whatshot</i>Задание №2
+            </div>
+
+            <div class="collapsible-body" >
+                <h4>Абзац 1</h4>
+                <p id="task2"></p>
+                <h4>Абзац 2</h4>
+            </div>
+        </li>
+
+        <li id="task3">
+            <div class="collapsible-header" onclick="task3()">
+                <i class="material-icons">whatshot</i>Задание №3
+            </div>
+
+            <div class="collapsible-body" >
+                <p id="task3"></p>
+            </div>
+        </li>
+
+        <li id="task4">
+            <div class="collapsible-header" onclick="task4()">
+                <i class="material-icons">whatshot</i>Задание №4
+            </div>
+
+            <div class="collapsible-body" >
+                <button class="btn btn-primary" onclick="task4_pass()">Пароль</button>
+            </div>
+        </li>
+
+        <li id="task5">
+            <div class="collapsible-header">
+                <i class="material-icons">whatshot</i>Задание №5
+            </div>
+
+            <div class="collapsible-body" >
+                <script>
+                    function line(width) {
+                        document.write("<hr align='center' width='"+width+"'>")
+                    }
+
+                    for(let i = 0; i <= 10; i ++) line(100)
+                    for(let i = 10; i <= 100; i += 10) line(i)
+                </script>
+            </div>
+        </li>
+
+        <li id="task6">
+            <div class="collapsible-header">
+                <i class="material-icons">whatshot</i>Задание №6
+            </div>
+
+            <div class="collapsible-body" >
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Степень</th>
+                            <th>Результат</th>
+                        </tr>
+                    </thead>
+                    <tboby>
+                        <script>
+                            function printRow(degree) {
+                                document.write(`<tr>
+                                    <td>2<sup>${degree}</sup></td>
+                                    <td>${Math.pow(2, degree)}</td>
+                                </tr>`)
+                            }
+                            for(let i = 0; i <= 5; i++) printRow(i)
+                        </script>
+                    </tboby>
+                </table>
+            </div>
+        </li>
+
+        <li id="task7">
+            <div class="collapsible-header">
+                <i class="material-icons">whatshot</i>Задание №7
+            </div>
+
+            <div class="collapsible-body" >
+                <script>
+                    let years = ["декабрь","январь","февраль","март","апрель","май", 
+                            "июнь","июль","август","сентябрь","октябрь","ноябрь"]
+                    let summer = years.slice(6,9)
+                    document.write(summer + "<br>")
+
+                    let subjects = ['математика', 'физика', 'информатика', 'русский язык', 'история']
+                    let precises = subjects.slice(0, 3)
+                    let humanities = subjects.slice(3, 5)
+
+                    document.write(`Исходные данные: ${subjects} <br>
+                                    Точные: ${precises} <br> 
+                                    Гуманитарные: ${humanities}<br> `)
+                </script>
+                
+            </div>
+        </li>
+        
+    </ul>
+    
+</main>
