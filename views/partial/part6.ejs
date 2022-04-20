@@ -1,0 +1,251 @@
+<main class="container" id="app">
+    <h1 class="center" data-aos="flip-up">Этап 6 (2)</h1>
+    <h5 class="center">События и их обработка в JavaScript и jQuery</h5>
+
+    <ul class="collapsible popout" data-aos="fade-right">
+        
+        <li id="task1">
+
+            <div class="collapsible-header" >
+                <i class="material-icons">whatshot</i>Задание №1
+            </div>
+
+            <div class="collapsible-body" >
+                <button class="btn red" id="task1Red">Красный фон</button>
+                <button class="btn" id="task1Default">Стандартный фон</button>
+            </div>
+        </li>  
+
+        <li id="task2">
+
+            <div class="collapsible-header" >
+                <i class="material-icons">whatshot</i>Задание №2
+            </div>
+
+            <div class="collapsible-body" >
+                <form>
+                    <div class="row">
+                        <div class="input-field col s12">
+                          <input id="name" type="text" class="validate">
+                          <label for="name">Имя</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="password" type="password" class="validate">
+                            <label for="password">Пароль</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="rpassword" type="password" class="validate">
+                            <label for="rpassword">Повторите пароль</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                          <input id="email" type="email" class="validate">
+                          <label for="email">Email</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                          <input id="subject" type="text" class="validate">
+                          <label for="subject">Тема сообщения</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <textarea placeholder="Сообщение" id="message" class="materialize-textarea"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <button class="btn" id="task2Send">Отправить</button>
+                            <button class="btn grey" id="task2Clear">Очистить</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </li>
+
+        <li id="task3">
+
+            <div class="collapsible-header" >
+                <i class="material-icons">whatshot</i>Задание №3
+            </div>
+
+            <style>
+                #task3 .collapsible-body {
+                    position: relative;
+                }
+                img#task3 {
+                    position: absolute;
+                    top: 25%;
+                    left: 47%;
+                }
+            </style>
+
+            <div class="collapsible-body" >
+                <img src="images/apple.jpg" alt="Apple" width="64" height="64" id="task3">
+                <div class="row center">
+                    <div class="col s3">
+                        <button class="btn" id="left">
+                            Влево
+                        </button>
+                    </div>
+                    <div class="col s3">
+                        <button class="btn" id="up">
+                            Вверх
+                        </button>
+                    </div>
+                    <div class="col s3">
+                        <button class="btn" id="right">
+                            Вправо
+                        </button>
+                    </div>
+                    <div class="col s3">
+                        <button class="btn" id="down">
+                            Вниз
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        <li id="task4">
+
+            <div class="collapsible-header" >
+                <i class="material-icons">whatshot</i>Задание №4
+            </div>
+
+            <div class="collapsible-body" >
+                <p id="mouse_x"></p>
+                <p id="mouse_y"></p>
+            </div>
+        </li>
+
+        <li id="task5">
+
+            <div class="collapsible-header" >
+                <i class="material-icons">whatshot</i>Задание №5
+            </div>
+
+            <style>
+                #task3 .collapsible-body{
+                    position: relative;
+                }
+                .box, .circle, .triangle {
+                    width: 32px;
+                    height: 32px;
+                    cursor: pointer;
+                    position: relative;
+                }
+
+                .box {
+                    top: 0;
+                }
+
+                .circle {
+                    left: 50%;
+                }
+
+                .triangle {
+                    right: 0;
+                }
+            </style>
+
+            <div class="collapsible-body" >
+                <div class="drag box red"></div>
+                <div class="drag circle green"></div>
+                <div class="drag triangle blue"></div>
+            </div>
+        </li>
+
+        <li id="task6">
+
+            <div class="collapsible-header" >
+                <i class="material-icons">whatshot</i>Задание №6
+            </div>
+
+            <div class="collapsible-body" >
+                <h4>Опрос</h4>
+                <h6>Ваш пол:</h6>
+                <form action="#">
+                    <p>
+                        <label>
+                            <input name="group1" type="radio" id='rMans'/>
+                            <span>Мужской</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input name="group1" type="radio" id='rWomans'/>
+                            <span>Женский</span>
+                        </label>
+                    </p>
+                    <input type="submit" class="btn blue" value="Проголосовать" id="vote">
+                </form>
+                <p id="mans">Мужчин: 0%</p>
+                <p id="womans">Женщин: 0%</p>
+            </div>
+        </li>
+
+        <li id="task7">
+
+            <div class="collapsible-header" >
+                <i class="material-icons">whatshot</i>Задание №7
+            </div>
+
+            <style>
+                .dgrid .head {
+                    display: grid;
+                    grid-template-columns: .7fr .15fr .15fr;
+                    grid-gap: 5px;
+                    max-width: 300px;
+                }
+                .middle {
+                    display: grid;
+                    grid-template-columns: .25fr .25fr .25fr .25fr;
+                    grid-gap: 5px;
+                    margin-bottom: 5px;;
+                    max-width: 300px;
+                }
+                input#calcStr {
+                    max-width: 200px;
+                }
+            </style>
+            <div class="collapsible-body" >
+                <h5>Калькулятор</h5>
+                <div class="dgrid head">
+                    <input type="text" id="calcStr" disabled>
+                    <button class="btn" onclick="append_op('back')"><<</button>
+                    <button class="btn" onclick="append_op('clear')">C</button>
+                </div>
+                <div class="middle">
+                    <button class="btn" onclick="append_op(1)">1</button>
+                    <button class="btn" onclick="append_op(2)">2</button>
+                    <button class="btn" onclick="append_op(3)">3</button>
+                    <button class="btn" onclick="append_op('+')">+</button>
+                </div>
+                <div class="middle">
+                    <button class="btn" onclick="append_op(4)">4</button>
+                    <button class="btn" onclick="append_op(5)">5</button>
+                    <button class="btn" onclick="append_op(6)">6</button>
+                    <button class="btn" onclick="append_op('-')">-</button>
+                </div>
+                <div class="middle">
+                    <button class="btn" onclick="append_op(7)">7</button>
+                    <button class="btn" onclick="append_op(8)">8</button>
+                    <button class="btn" onclick="append_op(9)">9</button>
+                    <button class="btn" onclick="append_op('*')">*</button>
+                </div>
+                <div class="middle">
+                    <button class="btn" onclick="append_op(0)">0</button>
+                    <button class="btn" onclick="append_op('.')">.</button>
+                    <button class="btn" onclick="append_op('/')">/</button>
+                    <button class="btn" onclick="append_op('calc')">=</button>
+                </div>
+            </div>
+        </li>
+    </ul>
+    
+</main>
