@@ -3,7 +3,7 @@ M.AutoInit() //Initialize Materialize
 // eslint-disable-next-line no-undef
 AOS.init() //Initialize AOS Library for scroll animations
 
-const PAGE_COUNT = 4
+const PAGE_COUNT = document.querySelectorAll('li.li_link').length
 
 let page_num = -1
 

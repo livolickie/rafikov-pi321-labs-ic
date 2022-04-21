@@ -1,0 +1,25 @@
+.container  {
+    /* padding: 0.25rem; */
+    position: relative;
+    border-radius: 5px;
+    margin-bottom: 3rem;
+}
+.btn.green {
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.5rem;
+}
+h4 {
+    margin: 0; 
+    margin-bottom: .5rem; 
+    padding: .25rem;
+    border-radius: 5px 5px 0px 0px;
+    /* font-weight: bold; */
+}
+h5 {
+    margin-bottom: 1rem;
+}
+.row.comment {
+    padding: 0;
+    margin: 0;
+}

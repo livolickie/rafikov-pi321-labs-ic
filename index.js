@@ -486,6 +486,60 @@ app.route('/3/api').get((req, res) => {
     res.end(msg)
 })
 
+let news = [
+    {id: 1, content: 'новость 1'},
+    {id: 2, content: 'новость 2'},
+    {id: 3, content: 'новость 3'},
+    {id: 4, content: 'новость 4'},
+    {id: 5, content: 'новость 5'},
+    {id: 6, content: 'новость 6'},
+    {id: 7, content: 'новость 7'},
+    {id: 8, content: 'новость 8'},
+    {id: 9, content: 'новость 9'},
+    {id: 10, content: 'новость 10'},
+    {id: 11, content: 'новость 11'},
+    {id: 12, content: 'новость 12'}
+]
+let comments = [
+    {id: 0, name: 'System', content: 'Комментарий из системы'}
+]
+
+//Part7
+app.route('/7/api').get((req, res) => {
+    //API for GET method
+    let type = req.query.type
+    res.set({'content-type': 'application/json; charset=utf-8'})
+    let out = {}
+    switch(type) {
+        case "loadNews":
+            let loaded = Number.parseInt(req.query.loaded)
+            let need = Number.parseInt(req.query.need)
+            if (loaded + need <= news.length) {
+                out = news.slice(loaded, loaded + need)
+            } else {
+                out = news.slice(loaded, news.length - loaded)
+            }
+        break;
+
+        case "loadComments":
+            out = comments
+        break;
+
+        case "uploadComment":
+            comments.push({
+                id: comments.length,
+                name: req.query.name,
+                content: req.query.content
+            })
+            out = {ok: true}
+            break;
+
+        default:
+            msg = 'Неверный запрос!'
+    }
+    res.json(out)
+})
+
 app.use((req, res) => {
     res.render('404', {message: 'Маршрут не найден!'})
 })
