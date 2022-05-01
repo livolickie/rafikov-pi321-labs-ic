@@ -540,6 +540,36 @@ app.route('/7/api').get((req, res) => {
     res.json(out)
 })
 
+let vacancies = [
+    {
+        fio: 'Иванов Иван Иванович',
+        birthday: 'Jan 10, 1990',
+        city: 'Москва',
+        shortStory: 'Студент. Учусь в МГУ.',
+        knownTechnologies: 'JavaScript, VueJS, MongoDB, SQL',
+        expectSalary: '150000'
+    }
+]
+//Part8
+app.route('/8/api').get((req, res) => {
+    //API for GET method
+    let type = req.query.type
+    res.set({'content-type': 'application/json; charset=utf-8'})
+    let out = {}
+    switch(type) {
+        case "loadVacancies":
+            out = vacancies;
+        break;
+
+        case "uploadVacancy":
+            let vacancy = JSON.parse(req.query.vacancy)
+            vacancy.knownTechnologies = vacancy.knownTechnologies.join(', ')
+            vacancies.push(vacancy);
+        break;
+    }
+    res.json(out)
+})
+
 app.use((req, res) => {
     res.render('404', {message: 'Маршрут не найден!'})
 })

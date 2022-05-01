@@ -1,0 +1,81 @@
+<main class="container" id="app">
+    <h1 class="center" data-aos="flip-up">Этап 8 (4)</h1>
+    <h5 class="center">Плагины jQuery. Работа с библиотекой jQuery UI</h5>
+    <p class="center"><strong>Вариант - 6 | перечень вакансий и форма подачи резюме</strong></p>
+
+    <div id="app">
+        <ul class="collapsible popout" data-aos="fade-right">
+        
+            <li class="">
+                <div class="collapsible-header"><i class="material-icons">whatshot</i>Список вакансий</div>
+                <div class="collapsible-body">
+                    <div class="vacancies-grid">
+                        <div class="vacancy-block z-depth-3" v-for="vacancy in vacancies" :key="vacancy.fio + vacancy.city">
+                            <div class="vacancy-block__photo z-depth-1">
+                                <img src="images/part8/cat.png" alt="Фото">
+                            </div>
+                            <div class="vacancy-block__info">
+                                <h4>{{vacancy.fio}}, {{vacancy.city}}, {{vacancy.birthday}}</h4>
+                                <h5>{{vacancy.shortStory}}</h5>
+                                <span class="center-align blue white-text">{{vacancy.knownTechnologies}}</span>
+                                <span class="center-align green white-text">От {{vacancy.expectSalary}} рублей</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <li class="active">
+                <div class="collapsible-header"><i class="material-icons">whatshot</i>Добавить свою вакансию</div>
+                <div class="collapsible-body">  
+                    <div class="row">
+                        <form class="col s12">
+                            <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Ваше ФИО">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input id="icon_prefix" type="text" class="validate" v-model="editVacancy.fio">
+                                <label for="icon_prefix">ФИО</label>
+                            </div>
+                            <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Ваша дата рождения">
+                                <i class="material-icons prefix">date_range</i>
+                                <input id="icon_prefix1" type="text" class="validate datepicker" v-model.lazy="editVacancy.birthday">
+                                <label for="icon_prefix1">Дата рождения</label>
+                            </div>
+                            <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Ваш город">
+                                <i class="material-icons prefix">location_city</i>
+                                <input id="icon_prefix2" type="text" class="autocomplete" v-model="editVacancy.city"> 
+                                <label for="icon_prefix2">Город</label>
+                            </div>
+                            <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Опишите себя">
+                                <i class="material-icons prefix">info</i>
+                                <textarea id="textarea1" class="materialize-textarea" v-model="editVacancy.shortStory"></textarea>
+                                <label for="textarea1">Краткое описание</label>
+                            </div>
+                            <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Тенхологии, которыми вы владеете">
+                                <select multiple v-model="editVacancy.knownTechnologies">
+                                    <option value="JavaScript">JavaScript</option>
+                                    <option value="Vue">Vue</option>
+                                    <option value="React">React</option>
+                                    <option value="Angular">Angular</option>
+                                    <option value="TypeScript">TypeScript</option>
+                                    <option value="NodeJS">NodeJS</option>
+                                    <option value="MongoDB">MongoDB</option>
+                                    <option value="SQL">SQL</option>
+                                </select>
+                                <label>Технологический стек</label>
+                            </div>
+
+                            <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Сколько требуете за свою работу?">
+                                <span class="col s3"><strong>Ожидаемая зарплата: </strong>{{editVacancy.expectSalary}} рублей</span>
+                                <p class="range-field col s9">
+                                    <input type="range" id="test5" min="10000" step="1000" max="1000000" v-model="editVacancy.expectSalary"/>
+                                </p>
+                            </div>
+
+                            <button class="btn right-align" type="submit" @click="addVacancy">Отправить</button>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        </ul>    
+    </div>
+</main>
