@@ -542,12 +542,63 @@ app.route('/7/api').get((req, res) => {
 
 let vacancies = [
     {
+        id: 0,
+        targetJob: 0,
         fio: 'Иванов Иван Иванович',
         birthday: 'Jan 10, 1990',
-        city: 'Москва',
+        city: 'Cupertino',
         shortStory: 'Студент. Учусь в МГУ.',
         knownTechnologies: 'JavaScript, VueJS, MongoDB, SQL',
-        expectSalary: '150000'
+        expectSalary: '150000',
+    },
+    {
+        id: 1,
+        targetJob: 1,
+        fio: 'Петров Петр Петрович',
+        birthday: 'Jan 12, 1992',
+        city: 'Boston',
+        shortStory: 'Студент. Учусь в СПБГУ.',
+        knownTechnologies: 'JavaScript, VueJS, MongoDB, SQL',
+        expectSalary: '150000',
+    },
+    {
+        id: 3,
+        targetJob: 2,
+        fio: 'Александров Александр Александрович',
+        birthday: 'Jan 14, 1995',
+        city: 'Москва',
+        shortStory: 'Студент. Учусь в УГАТУ.',
+        knownTechnologies: 'JavaScript, VueJS, MongoDB, SQL',
+        expectSalary: '150000',
+    }
+]
+let jobs = [
+    {
+        id: 0,
+        company: 'Apple',
+        date: '18.05.2022',
+        city: 'Cupertino',
+        description: 'Требуется React разработчик',
+        salary: 800000,
+        technologies: 'JavaScript, React, MongoDB'
+    },
+    {
+        id: 1,
+        company: 'Google',
+        date: '16.05.2022',
+        city: 'Boston',
+        description: 'Требуется Vue разработчик',
+        salary: 700000,
+        technologies: 'JavaScript, VueJS, MongoDB'
+    },
+    {
+        id: 2,
+        company: 'Yandex',
+        date: '17.05.2022',
+        city: 'Москва',
+        description: 'Требуется JavaScript разработчик',
+        salary: 300000,
+        technologies: 'JavaScript, SQL, MongoDB'
     }
 ]
 //Part8
@@ -561,11 +612,30 @@ app.route('/8/api').get((req, res) => {
             out = vacancies;
         break;
 
+        case "loadJobs":
+            out = jobs;
+        break;
+
         case "uploadVacancy":
             let vacancy = JSON.parse(req.query.vacancy)
+
+            //find free id
+            let id = 0
+            let found = false
+            while(!found) {
+                found = true
+                for(let vc in vacancies) {
+                    if (vc.id == id) {
+                        id++
+                        found = false
+                        break
+                    }
+                }
+            }
+            vacancy.id = id
             vacancy.knownTechnologies = vacancy.knownTechnologies.join(', ')
             vacancies.push(vacancy);
-        break;
+        break; 
     }
     res.json(out)
 })

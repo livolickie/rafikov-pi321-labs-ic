@@ -33,3 +33,10 @@ h5, h4, span {
 span {
     padding: .25rem;
 }
+
+.job {
+    padding: .5rem;
+}
+.job-buttons {
+    margin: .25rem 0rem .75rem 0;
+}

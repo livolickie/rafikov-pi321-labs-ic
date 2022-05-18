@@ -5,77 +5,120 @@
 
     <div id="app">
         <ul class="collapsible popout" data-aos="fade-right">
-        
-            <li class="">
+            <li class="active">
                 <div class="collapsible-header"><i class="material-icons">whatshot</i>Список вакансий</div>
                 <div class="collapsible-body">
-                    <div class="vacancies-grid">
-                        <div class="vacancy-block z-depth-3" v-for="vacancy in vacancies" :key="vacancy.fio + vacancy.city">
-                            <div class="vacancy-block__photo z-depth-1">
-                                <img src="images/part8/cat.png" alt="Фото">
-                            </div>
-                            <div class="vacancy-block__info">
-                                <h4>{{vacancy.fio}}, {{vacancy.city}}, {{vacancy.birthday}}</h4>
-                                <h5>{{vacancy.shortStory}}</h5>
-                                <span class="center-align blue white-text">{{vacancy.knownTechnologies}}</span>
-                                <span class="center-align green white-text">От {{vacancy.expectSalary}} рублей</span>
+                    <div class="row">
+                        <div class="col s6 job card" v-for="job in jobs" :key="job.id">
+                            <p>
+                                <strong>Работодатель: </strong>{{job.company}}
+                            </p>
+                            <p>
+                                <strong>Дата размещения: </strong>{{job.date}}
+                            </p>
+                            <p>
+                                <strong>Описание: </strong>{{job.description}}
+                            </p>
+                            <p>
+                                <strong>Зарплата: </strong>{{job.salary}} у.е.
+                            </p>
+                            <p>
+                                <strong>Город: </strong>{{job.city}}
+                            </p>
+                            <p>
+                                <strong>Требуемые технологии: </strong>
+                                <span class="green white-text">{{job.technologies}}</span>
+                            </p>
+                            <div class="d-flex job-buttons">
+                                <button class="btn blue" v-on:click="setTempJob(job, true)">
+                                    Откликнуться
+                                </button>
+                                <button class="btn grey" v-on:click="setTempJob(job)">
+                                    Список откликов
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </li>
-            
-            <li class="active">
-                <div class="collapsible-header"><i class="material-icons">whatshot</i>Добавить свою вакансию</div>
-                <div class="collapsible-body">  
-                    <div class="row">
-                        <form class="col s12">
-                            <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Ваше ФИО">
-                                <i class="material-icons prefix">account_circle</i>
-                                <input id="icon_prefix" type="text" class="validate" v-model="editVacancy.fio">
-                                <label for="icon_prefix">ФИО</label>
-                            </div>
-                            <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Ваша дата рождения">
-                                <i class="material-icons prefix">date_range</i>
-                                <input id="icon_prefix1" type="text" class="validate datepicker" v-model.lazy="editVacancy.birthday">
-                                <label for="icon_prefix1">Дата рождения</label>
-                            </div>
-                            <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Ваш город">
-                                <i class="material-icons prefix">location_city</i>
-                                <input id="icon_prefix2" type="text" class="autocomplete" v-model="editVacancy.city"> 
-                                <label for="icon_prefix2">Город</label>
-                            </div>
-                            <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Опишите себя">
-                                <i class="material-icons prefix">info</i>
-                                <textarea id="textarea1" class="materialize-textarea" v-model="editVacancy.shortStory"></textarea>
-                                <label for="textarea1">Краткое описание</label>
-                            </div>
-                            <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Тенхологии, которыми вы владеете">
-                                <select multiple v-model="editVacancy.knownTechnologies">
-                                    <option value="JavaScript">JavaScript</option>
-                                    <option value="Vue">Vue</option>
-                                    <option value="React">React</option>
-                                    <option value="Angular">Angular</option>
-                                    <option value="TypeScript">TypeScript</option>
-                                    <option value="NodeJS">NodeJS</option>
-                                    <option value="MongoDB">MongoDB</option>
-                                    <option value="SQL">SQL</option>
-                                </select>
-                                <label>Технологический стек</label>
-                            </div>
+        </ul>    
+    </div>
 
-                            <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Сколько требуете за свою работу?">
-                                <span class="col s3"><strong>Ожидаемая зарплата: </strong>{{editVacancy.expectSalary}} рублей</span>
-                                <p class="range-field col s9">
-                                    <input type="range" id="test5" min="10000" step="1000" max="1000000" v-model="editVacancy.expectSalary"/>
-                                </p>
-                            </div>
-
-                            <button class="btn right-align" type="submit" @click="addVacancy">Отправить</button>
-                        </form>
+    <div id="modalVacancies" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4 v-if="tempJob">Список откликов {{tempJob.company}}</h4>
+            <p></p>
+            <div class="vacancies-grid">
+                <div class="vacancy-block z-depth-3" v-for="vacancy in tempVacancies" :key="vacancy.id">
+                    <div class="vacancy-block__photo z-depth-1">
+                        <img src="images/part8/cat.png" alt="Фото">
+                    </div>
+                    <div class="vacancy-block__info">
+                        <h4>{{vacancy.fio}}, {{vacancy.city}}, {{vacancy.birthday}}</h4>
+                        <h5>{{vacancy.shortStory}}</h5>
+                        <span class="center-align blue white-text">{{vacancy.knownTechnologies}}</span>
+                        <span class="center-align green white-text">От {{vacancy.expectSalary}} рублей</span>
                     </div>
                 </div>
-            </li>
-        </ul>    
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat" @click="tempVacanciesModal.close()">Закрыть</a>
+        </div>
+    </div>
+
+    <div id="modalApplyResume" class="modal">
+        <div class="modal-content">
+            <h4 v-if="tempJob">Добавление резюме {{tempJob.company}}</h4>
+            <p></p>
+            <div class="row">
+                <form class="col s12">
+                    <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Ваше ФИО">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input id="icon_prefix" type="text" class="validate" v-model="editVacancy.fio">
+                        <label for="icon_prefix">ФИО</label>
+                    </div>
+                    <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Ваша дата рождения">
+                        <i class="material-icons prefix">date_range</i>
+                        <input id="icon_prefix1" type="text" class="validate datepicker" v-model.lazy="editVacancy.birthday">
+                        <label for="icon_prefix1">Дата рождения</label>
+                    </div>
+                    <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Ваш город">
+                        <i class="material-icons prefix">location_city</i>
+                        <input id="icon_prefix2" type="text" class="autocomplete" v-model="editVacancy.city"> 
+                        <label for="icon_prefix2">Город</label>
+                    </div>
+                    <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Опишите себя">
+                        <i class="material-icons prefix">info</i>
+                        <textarea id="textarea1" class="materialize-textarea" v-model="editVacancy.shortStory"></textarea>
+                        <label for="textarea1">Краткое описание</label>
+                    </div>
+                    <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Тенхологии, которыми вы владеете">
+                        <select multiple v-model="editVacancy.knownTechnologies">
+                            <option value="JavaScript">JavaScript</option>
+                            <option value="Vue">Vue</option>
+                            <option value="React">React</option>
+                            <option value="Angular">Angular</option>
+                            <option value="TypeScript">TypeScript</option>
+                            <option value="NodeJS">NodeJS</option>
+                            <option value="MongoDB">MongoDB</option>
+                            <option value="SQL">SQL</option>
+                        </select>
+                        <label>Технологический стек</label>
+                    </div>
+
+                    <div class="input-field col s12 tooltipped" data-position="right" data-tooltip="Сколько требуете за свою работу?">
+                        <span class="col s3"><strong>Ожидаемая зарплата: </strong>{{editVacancy.expectSalary}} рублей</span>
+                        <p class="range-field col s9">
+                            <input type="range" id="test5" min="10000" step="1000" max="1000000" v-model="editVacancy.expectSalary"/>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn blue waves-effect" type="submit" @click="addVacancy">Отправить</button>
+            <a href="#!" class="modal-close waves-effect waves-green btn red" @click="applyResumeModal.close()">Закрыть</a>
+        </div>
     </div>
 </main>
