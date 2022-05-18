@@ -1,54 +1,28 @@
-.square {
-    cursor: pointer;
-}
-.square:hover {
-    transition: all .1s ease-in-out;
-    transform: scale(1.1);
-}
-.board-row:after {
-    clear: both;
-    content: "";
-    display: table;
-}
-
-.stepBtn {
-    margin-bottom: .5rem;
-    padding: .25rem;
-    line-height: 25%;
-}
-
-.status {
-    margin-bottom: 10px;
-}
-
-.square {
-    background: #fff;
-    border: 1px solid #999;
-    float: left;
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 34px;
-    height: 34px;
-    margin-right: -1px;
-    margin-top: -1px;
-    padding: 0;
-    text-align: center;
-    width: 34px;
-}
-
-.square:focus {
-    outline: none;
-}
-
-.kbd-navigation .square:focus {
-    background: #ddd;
-}
-
-.game {
+.board-row {
     display: flex;
-    flex-direction: row;
+}
+.cell {
+    width: 32px;
+    height: 32px;
+    border: 1px solid black;
+    margin: 1px;
+    cursor: pointer;
+    transition: all ease-in-out .1s;
+    text-align: center;
+    padding-top: 5px;
 }
 
-.game-info {
-    margin-left: 20px;
+.history {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 10px;
+}
+
+.btn {
+    margin: 8px 0;
+}
+
+.cell:hover{
+    transition: all ease-in-out .1s;
+    transform: scale(1.1);
 }

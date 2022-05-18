@@ -1,143 +1,216 @@
-function Square(props) {
-    return (
-        <button className="square" onClick={props.onClick}>
-            {props.value}
-        </button>
-    );
-}
+//Vue side
 
-class Board extends React.Component {
-    renderSquare(i) {
-        return (
-            <Square
-                value={this.props.squares[i]}
-                onClick={() => this.props.onClick(i)}
-            />
-        );
-    }
+const Cell = Vue.component('Cell', {
+    name: 'Cell',
+    props: {
+        // clickCell: {
+        //     type: Function,
+        //     required: true
+        // },
+        cell: {
+            type: Object,
+            required: true
+        }
+    },
+    template: `
+        <div class='cell' v-on:click='$emit("click")'>
+            {{cell.data}}
+        </div>
+    `
+})
 
-    render() {
-        return (
-            <div>
-                <div className="board-row">
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(3)}
-                    {this.renderSquare(4)}
-                    {this.renderSquare(5)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(6)}
-                    {this.renderSquare(7)}
-                    {this.renderSquare(8)}
-                </div>
+const Board = Vue.component('Board', {
+    name: 'Board',
+    components: {
+        'Cell': Cell
+    },
+    props: {
+        board: {
+            type: Array,
+            required: true
+        },
+        cell_click: {
+            type: Function,
+            required: true
+        }
+    },
+    methods: {
+        log() {
+            console.log('LOG!')
+        }
+    },
+    template: 
+        `<div class='board'>
+            <div class='board-row' v-for='(row, i) in board' :key='i'>
+                <template v-for='(cell, j) in row'>
+                    <Cell :cell='board[i][j]' v-on:click='cell_click(i, j)' :key='j'/>
+                </template>
             </div>
-        );
-    }
-}
+        </div>`
+})
 
-class Game extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            history: [
-                {
-                    squares: Array(9).fill(null)
+let vue = new Vue({
+    el: '#app',
+    data() { return {
+        N: 3,
+        board: [],
+        xStep: true,
+        history: [],
+        historyIndex: -1,
+        winner: ''
+    }},
+    components: {
+        'Board': Board
+    },
+    watch: {
+        N(val) {
+            this.initBoard()
+        }
+    },
+    methods: {
+        initBoard() {
+            this.board = []
+            for(let i = 0; i < this.N; i++) {
+                this.board.push([])
+                for(let j = 0; j < this.N; j++) {
+                    this.board[i].push({data: ''})
                 }
-            ],
-            stepNumber: 0,
-            xIsNext: true
-        };
-    }
+            }
+            this.history = []
+            this.winner = ''
+            this.saveHistory()
+        },
+        saveHistory() {
+            this.history.push({
+                board: this.board.map(row => {
+                    return row.map(val => {
+                        return {...val}
+                    })
+                }),
+                xStep: this.xStep
+            })
+        },
+        clickCell(row, pos) {
+            if (this.winner != '' && this.historyIndex == -1) return
 
-    handleClick(i) {
-        const history = this.state.history.slice(0, this.state.stepNumber + 1);
-        const current = history[history.length - 1];
-        const squares = current.squares.slice();
-        if (calculateWinner(squares) || squares[i]) {
-            return;
-        }
-        squares[i] = this.state.xIsNext ? "X" : "O";
-        this.setState({
-            history: history.concat([
-                {
-                    squares: squares
+            if (this.board[row][pos].data == '') {
+                if (this.historyIndex != -1) {
+                    this.history.splice(this.historyIndex, this.history.length - this.historyIndex)
+                    this.historyIndex = -1
+                    this.winner = ''
+                    this.saveHistory()
                 }
-            ]),
-            stepNumber: history.length,
-            xIsNext: !this.state.xIsNext
-        });
-    }
+                this.board[row][pos].data = this.xStep ? 'X' : 'O'
+                this.xStep = !this.xStep
+                
+                this.saveHistory()
 
-    jumpTo(step) {
-        this.setState({
-            stepNumber: step,
-            xIsNext: (step % 2) === 0
-        });
-    }
+                this.checkWinner()
+            }
+        },
+        checkWinner() {
+            let step = ''
+            let points = 0
 
-    render() {
-        const history = this.state.history;
-        const current = history[this.state.stepNumber];
-        const winner = calculateWinner(current.squares);
+            //Check horizontal
+            for(let i = 0; i < this.N; i++) {
+                step = ''
+                points = 0
+                for(let j = 0; j < this.N; j++) {
+                    let nextStep = this.board[i][j].data
+                    if (step == '' && nextStep != '') points = 1
+                    if (step == nextStep) {
+                        points++
+                    }
+                    if (nextStep == '') {
+                        points = 0
+                    }
+                    step = nextStep
+                }
+                if (points == this.N) {
+                    this.winner = step
+                    return 
+                }
+            }
 
-        const moves = history.map((step, move) => {
-            const desc = move ?
-                'Перейти к шагу #' + move :
-                'Вернуться на начало игры';
-            return (
-                <li key={move}>
-                    <button class="btn stepBtn" onClick={() => this.jumpTo(move)}>{desc}</button>
-                </li>
-            );
-        });
+            for(let i = 0; i < this.N; i++) {
+                step = ''
+                points = 0
+                for(let j = 0; j < this.N; j++) {
+                    let nextStep = this.board[j][i].data
+                    if (step == '' && nextStep != '') points = 1
+                    if (step == nextStep) {
+                        points++
+                    }
+                    if (nextStep == '') {
+                        points = 0
+                    }
+                    step = nextStep
+                }
+                if (points == this.N) {
+                    this.winner = step
+                    return 
+                }
+            }
 
-        let status;
-        if (winner) {
-            status = "Победитель: " + winner;
-        } else {
-            status = "Следующий игрок: " + (this.state.xIsNext ? "X" : "O");
+            points = 0
+            step = ''
+
+            //Check diagonal 1
+            for(let i = 0; i < this.N; i++) { 
+                let nextStep = this.board[i][i].data
+                if (step == '' && nextStep != '') points = 1
+                if (step == nextStep) {
+                    points++
+                }
+                if (nextStep == '') {
+                    points = 0
+                }
+                step = nextStep
+            }
+            if (points == this.N) {
+                this.winner = step
+                return 
+            }
+
+            points = 0
+            step = ''
+
+            //Check diagonal 2
+            for(let i = this.N - 1; i >= 0; i--) { 
+                
+                let nextStep = this.board[this.N - 1 - i][i].data
+                if (step == '' && nextStep != '') points = 1
+                if (step == nextStep) {
+                    points++
+                }
+                if (nextStep == '') {
+                    points = 0
+                }
+                step = nextStep
+            }
+            if (points == this.N) {
+                this.winner = step
+                return 
+            }
+
+            points = 0
+            for(let i = 0; i < this.N; i++) {
+                for(let j = 0; j < this.N; j++) {
+                    if (this.board[i][j].data == '') points++
+                }
+            }
+            if (points == 0) this.winner = 'Никто'
+        },
+        moveHistory(i) {
+            if (this.history[i]) {
+                this.board = this.history[i].board
+                this.xStep = this.history[i].xStep
+                this.historyIndex = i
+            }
         }
-
-        return (
-            <div className="game">
-                <div className="game-board">
-                    <Board
-                        squares={current.squares}
-                        onClick={i => this.handleClick(i)}
-                    />
-                </div>
-                <div className="game-info">
-                    <div>{status}</div>
-                    <ol>{moves}</ol>
-                </div>
-            </div>
-        );
+    },
+    mounted() {
+        this.initBoard()
     }
-}
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<Game />);
-
-function calculateWinner(squares) {
-    const lines = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6]
-    ];
-    for (let i = 0; i < lines.length; i++) {
-        const [a, b, c] = lines[i];
-        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a];
-        }
-    }
-    return null;
-}
+})

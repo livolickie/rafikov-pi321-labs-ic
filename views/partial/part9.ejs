@@ -7,7 +7,18 @@
         <li class="active">
             <div class="collapsible-header"><i class="material-icons">whatshot</i>Игра</div>
             <div class="collapsible-body">
-                <div id="root">
+                <div id="app">
+                    <input type='number' min=3 max=9 v-model='N'>
+                    <p>Ходит {{xStep ? 'X' : 'O'}}</p>
+                    <p v-if="winner != ''">Победитель {{winner}}</p>
+                    <div class="row">
+                        <Board v-bind:board='board' :cell_click='clickCell'/>
+                    </div>
+                    <div class="history">
+                        <button class="btn" v-for="(hist, i) in history" :key='i' v-on:click='moveHistory(i)'>
+                            {{ i == 0 ? 'Вернуться на начало' : 'Ход №'+(i+1)}}
+                        </button>
+                    </div>
                     
                 </div>
             </div>
